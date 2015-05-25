@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+TOP=`dirname $0`
+pushd $TOP
+mkdir -p target
+cd target
+cmake ..
+make
+if ! make test; then
+    cat Testing/Temporary/LastTest.log
+    exit 1
+fi
+popd
