@@ -1,10 +1,11 @@
-#ifndef _2200_USERS_PASSWORD_H
-#define _2200_USERS_PASSWORD_H
-
 #include "password.h"
 
 namespace Users {
-  
-}
+    Password Password::hash(const std::string& password) {
+        return Password::hash(password, "salt");
+    }
 
-#endif // _2200_USERS_PASSWORD_H
+    Password Password::hash(const std::string& password, const std::string& salt) {
+        return Password(password, salt);
+    }
+}

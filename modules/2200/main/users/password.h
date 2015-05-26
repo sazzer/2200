@@ -29,6 +29,21 @@ namespace Users {
     const std::string& seed() const {
       return seed_;
     }
+
+    /**
+     * Hash the given plain-text password, generating a salt
+     * @param password The password
+     * @return the hashed password
+     */
+    static Password hash(const std::string& password);
+
+    /**
+     * Hash the given plain-text password, using the provided salt
+     * @param password The password
+     * @param salt The salt
+     * @return the hashed password
+     */
+    static Password hash(const std::string& password, const std::string& salt);
   protected:
   private:
     /** The actual password hash */
