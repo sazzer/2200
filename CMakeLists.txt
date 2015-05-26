@@ -17,7 +17,8 @@ FIND_PACKAGE(PkgConfig)
 # Set up the actual builds
 #------------------------------------------------------------------------------
 ADD_LIBRARY(2200Lib STATIC
-  modules/2200/main/main.cpp)
+  modules/2200/main/main.cpp
+  modules/2200/main/users/password.cpp)
 TARGET_INCLUDE_DIRECTORIES(2200Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/2200/main)
 
 ADD_EXECUTABLE(2200
