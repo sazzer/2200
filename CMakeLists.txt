@@ -12,6 +12,11 @@ ENABLE_TESTING()
 # Set up any library dependencies that we are going to need
 #------------------------------------------------------------------------------
 FIND_PACKAGE(PkgConfig)
+SET(Boost_USE_STATIC_LIBS ON)
+SET(Boost_USE_MULTITHREADED ON)
+SET(Boost_USE_STATIC_RUNTIME ON)
+FIND_PACKAGE(Boost 1.55.0 COMPONENTS system)
+FIND_PACKAGE(OpenSSL)
 
 #------------------------------------------------------------------------------
 # The main game library
@@ -20,6 +25,8 @@ ADD_LIBRARY(2200Lib STATIC
   modules/2200/main/main.cpp
   modules/2200/main/users/password.cpp)
 TARGET_INCLUDE_DIRECTORIES(2200Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/2200/main)
+TARGET_INCLUDE_DIRECTORIES(2200Lib PUBLIC ${OPENSSL_INCLUDE_DIR})
+TARGET_LINK_LIBRARIES(2200Lib ${OPENSSL_LIBRARIES})
 
 ADD_EXECUTABLE(2200LibTest
     modules/shared/test/main.cpp
