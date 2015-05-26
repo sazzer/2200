@@ -14,13 +14,25 @@ ENABLE_TESTING()
 FIND_PACKAGE(PkgConfig)
 
 #------------------------------------------------------------------------------
-# Set up the actual builds
+# The main game library
 #------------------------------------------------------------------------------
 ADD_LIBRARY(2200Lib STATIC
   modules/2200/main/main.cpp
   modules/2200/main/users/password.cpp)
 TARGET_INCLUDE_DIRECTORIES(2200Lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/2200/main)
 
+ADD_EXECUTABLE(2200LibTest
+    modules/shared/test/main.cpp
+    modules/2200/test/users/passwordTest.cpp)
+TARGET_INCLUDE_DIRECTORIES(2200LibTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/2200/main)
+TARGET_INCLUDE_DIRECTORIES(2200LibTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/shared/test)
+TARGET_INCLUDE_DIRECTORIES(2200LibTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/lest)
+TARGET_LINK_LIBRARIES(2200LibTest 2200Lib)
+ADD_TEST(NAME 2200Lib COMMAND 2200LibTest)
+
+#------------------------------------------------------------------------------
+# The main game executable
+#------------------------------------------------------------------------------
 ADD_EXECUTABLE(2200
   modules/2200/main/exec.cpp)
 TARGET_INCLUDE_DIRECTORIES(2200 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/2200/main)
