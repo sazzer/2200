@@ -9,11 +9,11 @@ namespace Users {
     /**
      * Construct the password
      * @param hash The hashed password
-     * @param seed The seed for the hash
+     * @param salt The salt for the hash
      */
-  Password(const std::string& hash, const std::string& seed)
+  Password(const std::string& hash, const std::string& salt)
     : hash_(hash),
-      seed_(seed) {}
+      salt_(salt) {}
     /**
      * Get the hash
      * @return the hash
@@ -23,11 +23,11 @@ namespace Users {
     }
 
     /**
-     * Get the seed
-     * @return the seed
+     * Get the salt
+     * @return the salt
      */
-    const std::string& seed() const {
-      return seed_;
+    const std::string& salt() const {
+      return salt_;
     }
 
     /**
@@ -48,7 +48,7 @@ namespace Users {
   private:
     /** The actual password hash */
     const std::string hash_;
-    /** The seed used to generate the hash */
-    const std::string seed_;
+    /** The salt used to generate the hash */
+    const std::string salt_;
   };
 }
