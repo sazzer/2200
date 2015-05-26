@@ -24,6 +24,45 @@ const lest::test module[] = {
         }
       }  
     }
+  },
+
+  SCENARIO("Comparing Passwords") {
+    GIVEN("A hashed password") {
+      const Users::Password password = Users::Password::hash("password", "salt");
+      
+      WHEN("Comparing to another hashed password") {
+        THEN("The same password is a match") {
+          EXPECT(Users::Password::hash("password", "salt") == password);
+        }
+        
+        THEN("A different salt is not a match") {
+          EXPECT_NOT(Users::Password::hash("password", "different") == password);
+        }
+        
+        THEN("A different password is not a match") {
+          EXPECT_NOT(Users::Password::hash("different", "salt") == password);
+        }
+      }
+      
+      WHEN("Comparing to a string") {
+        THEN("The same password is a match") {
+          EXPECT(password == "password");
+        }
+        THEN("A different password is a match") {
+          EXPECT_NOT(password == "different");
+        }
+      }
+      
+      WHEN("Comparing a string to it") {
+        THEN("The same password is a match") {
+          EXPECT("password" == password);
+        }
+        THEN("A different password is a match") {
+          EXPECT_NOT("different" == password);
+        }
+      }
+      
+    }
   }
 };
 

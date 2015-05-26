@@ -32,4 +32,34 @@ namespace Users {
     
     return Password(hashedPassword, salt);
   }
+  
+  /**
+   * Compare two password objects for equality
+   * @param a The first password
+   * @param b The second password
+   * @return True if the two passwords are the same
+   */
+  bool operator==(const Password& a, const Password& b) {
+    return a.hash() == b.hash() && a.salt() == b.salt();
+  }
+  
+  /**
+   * Compare a password to a plaintext version
+   * @param a The hashed password
+   * @param b The plaintext password
+   * @return True if the two passwords are the same
+   */
+  bool operator==(const Password& a, const std::string& b) {
+    return Password::hash(b, a.salt()) == a;
+  }
+  
+  /**
+   * Compare a password to a plaintext version
+   * @param a The plaintext password
+   * @param b The hashed password
+   * @return True if the two passwords are the same
+   */
+  bool operator==(const std::string& a, const Password& b) {
+    return b == a;
+  }
 }
