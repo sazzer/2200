@@ -1,3 +1,3 @@
-[submodule "external/lest"]
-	path = external/lest
-	url = git@github.com:martinmoene/lest.git
+[submodule "external/catch"]
+	path = external/catch
+	url = git@github.com:philsquared/Catch.git
