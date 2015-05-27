@@ -12,12 +12,15 @@ ENABLE_TESTING()
 # Set up any library dependencies that we are going to need
 #------------------------------------------------------------------------------
 FIND_PACKAGE(PkgConfig)
+
 SET(Boost_USE_STATIC_LIBS ON)
 SET(Boost_USE_MULTITHREADED ON)
 SET(Boost_USE_STATIC_RUNTIME ON)
 FIND_PACKAGE(Boost 1.55.0 COMPONENTS system)
+
 FIND_PACKAGE(OpenSSL)
 
+PKG_CHECK_MODULES(UV REQUIRED libuv)
 #------------------------------------------------------------------------------
 # The main game library
 #------------------------------------------------------------------------------
@@ -36,6 +39,20 @@ TARGET_INCLUDE_DIRECTORIES(2200LibTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/module
 TARGET_INCLUDE_DIRECTORIES(2200LibTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/catch/single_include)
 TARGET_LINK_LIBRARIES(2200LibTest 2200Lib)
 ADD_TEST(NAME 2200Lib COMMAND 2200LibTest)
+
+#------------------------------------------------------------------------------
+# The Telnet network server
+#------------------------------------------------------------------------------
+ADD_LIBRARY(2200TelnetNetworkLib STATIC
+  modules/network/main/server.cpp)
+TARGET_INCLUDE_DIRECTORIES(2200TelnetNetworkLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
+TARGET_INCLUDE_DIRECTORIES(2200TelnetNetworkLib PUBLIC ${UV_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES(2200TelnetNetworkLib ${UV_LIBRARIES})
+
+ADD_EXECUTABLE(2200TelnetNetworkLibDiscardServer
+    modules/network/testrig/discardServer.cpp)
+TARGET_INCLUDE_DIRECTORIES(2200TelnetNetworkLibDiscardServer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
+TARGET_LINK_LIBRARIES(2200TelnetNetworkLibDiscardServer 2200TelnetNetworkLib)
 
 #------------------------------------------------------------------------------
 # The main game executable
