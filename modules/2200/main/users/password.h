@@ -1,3 +1,6 @@
+#ifndef _2200_2200_USERS_PASSWORD_H
+#define _2200_2200_USERS_PASSWORD_H
+
 #include <string>
 
 namespace Users {
@@ -75,3 +78,5 @@ namespace Users {
    */
   bool operator==(const std::string& a, const Password& b);
 }
+
+#endif // _2200_2200_USERS_PASSWORD_H
