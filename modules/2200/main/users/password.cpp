@@ -23,11 +23,11 @@ namespace Users {
     SHA256_Update(&sha256, password.c_str(), password.size());
     SHA256_Final(hash, &sha256);
 
-    std::string hashedPassword;
-    char bytePair[2];
+    char hashedPassword[SHA256_DIGEST_LENGTH * 2];
+    size_t offset = 0;
     for (unsigned char h : hash) {
-      sprintf(bytePair, "%02x", h);
-      hashedPassword += bytePair;
+      sprintf(hashedPassword + offset, "%02x", h);
+      offset += 2;
     }
     
     return Password(hashedPassword, salt);
