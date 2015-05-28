@@ -42,6 +42,7 @@ ADD_TEST(NAME 2200Lib COMMAND 2200LibTest)
 # The Telnet network server
 #------------------------------------------------------------------------------
 ADD_LIBRARY(2200TelnetNetworkLib STATIC
+  modules/network/main/socketAddress.cpp
   modules/network/main/server.cpp)
 TARGET_INCLUDE_DIRECTORIES(2200TelnetNetworkLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
 

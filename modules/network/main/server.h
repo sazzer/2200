@@ -2,7 +2,7 @@
 #define _2200_NETWORK_NETWORK_SERVER_H
 
 #include <memory>
-#include <string>
+#include "address.h"
 
 namespace Network {
   /**
@@ -24,17 +24,10 @@ namespace Network {
     Server& operator=(const Server&) = delete;
 
     /**
-     * Add a new listener to the server. This listens on all interfaces.
-     * @param port The port to listen on
-     */
-    void addListener(const short port);
-
-    /**
-     * Add a new listener to the server. This listens on a specific address.
+     * Add a new listener to the server.
      * @param address The address to listen on
-     * @param port The port to listen on
      */
-    void addListener(const std::string& address, const short port);
+    void addListener(const Address address);
 
     /**
      * Start running the server. This method will not return until the server stops
