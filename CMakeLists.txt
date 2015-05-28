@@ -19,6 +19,8 @@ SET(Boost_USE_STATIC_RUNTIME ON)
 FIND_PACKAGE(Boost 1.55.0 COMPONENTS system)
 
 FIND_PACKAGE(OpenSSL)
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/external/easyloggingpp/src)
 #------------------------------------------------------------------------------
 # The main game library
 #------------------------------------------------------------------------------
