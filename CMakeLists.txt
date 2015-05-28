@@ -41,10 +41,19 @@ ADD_TEST(NAME 2200Lib COMMAND 2200LibTest)
 #------------------------------------------------------------------------------
 # The Telnet network server
 #------------------------------------------------------------------------------
-ADD_LIBRARY(2200TelnetNetworkLib STATIC
+ADD_LIBRARY(2200NetworkLib STATIC
   modules/network/main/socketAddress.cpp
   modules/network/main/server.cpp)
-TARGET_INCLUDE_DIRECTORIES(2200TelnetNetworkLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
+TARGET_INCLUDE_DIRECTORIES(2200NetworkLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
+
+ADD_EXECUTABLE(2200NetworkTest
+    modules/shared/test/main.cpp
+    modules/network/test/testAddress.cpp)
+TARGET_INCLUDE_DIRECTORIES(2200NetworkTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/network/main)
+TARGET_INCLUDE_DIRECTORIES(2200NetworkTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/modules/shared/test)
+TARGET_INCLUDE_DIRECTORIES(2200NetworkTest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/catch/single_include)
+TARGET_LINK_LIBRARIES(2200NetworkTest 2200NetworkLib)
+ADD_TEST(NAME 2200NetworkLib COMMAND 2200NetworkTest)
 
 #------------------------------------------------------------------------------
 # The main game executable
