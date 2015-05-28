@@ -9,14 +9,14 @@ namespace Network {
   struct Server::Impl {
     std::set<std::shared_ptr<sockaddr_in> > pendingServers;
   };
-  
+
   Server::Server() : pImpl(new Server::Impl) {
   }
 
   Server::~Server() {
   }
 
-  
+
   void Server::addListener(const short port) {
     std::shared_ptr<sockaddr_in> addr(new sockaddr_in);
     addr->sin_family = AF_INET;
@@ -24,7 +24,7 @@ namespace Network {
     addr->sin_addr.s_addr = INADDR_ANY;
     pImpl->pendingServers.insert(addr);
   }
-  
+
   void Server::addListener(const std::string& address, const short port) {
     std::shared_ptr<sockaddr_in> addr(new sockaddr_in);
     addr->sin_family = AF_INET;
@@ -33,4 +33,7 @@ namespace Network {
     pImpl->pendingServers.insert(addr);
   }
 
+  void Server::run() {
+    
+  }
 }

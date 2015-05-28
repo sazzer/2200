@@ -35,6 +35,11 @@ namespace Network {
      * @param port The port to listen on
      */
     void addListener(const std::string& address, const short port);
+
+    /**
+     * Start running the server. This method will not return until the server stops
+     */
+    void run();
   protected:
   private:
     /** The internal implementation structure */
