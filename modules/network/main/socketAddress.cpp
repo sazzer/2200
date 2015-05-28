@@ -1,4 +1,5 @@
 #include "socketAddress.h"
+#include <cstring>
 
 namespace Network {
   void populateSockaddr(const Address& address, sockaddr_in& sockaddr) {
