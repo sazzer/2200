@@ -17,7 +17,7 @@ public class OptionSubNegotiation implements TelnetMessage {
      * @param option the option ID
      * @param subnegotiation the subnegotiation data
      */
-    public OptionSubNegotiation(byte option, byte[] subnegotiation) {
+    public OptionSubNegotiation(final byte option, final byte[] subnegotiation) {
         this.option = option;
         this.subnegotiation = new byte[subnegotiation.length];
         System.arraycopy(subnegotiation, 0, this.subnegotiation, 0, subnegotiation.length);
@@ -36,9 +36,9 @@ public class OptionSubNegotiation implements TelnetMessage {
      * @return the subnegotiation data
      */
     public byte[] getSubnegotiation() {
-        byte[] subnegotiation = new byte[this.subnegotiation.length];
-        System.arraycopy(this.subnegotiation, 0, subnegotiation, 0, subnegotiation.length);
-        return subnegotiation;
+        byte[] result = new byte[this.subnegotiation.length];
+        System.arraycopy(subnegotiation, 0, result, 0, subnegotiation.length);
+        return result;
     }
 
     /** {@inheritDoc} */

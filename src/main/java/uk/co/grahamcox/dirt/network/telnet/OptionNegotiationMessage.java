@@ -15,7 +15,7 @@ public class OptionNegotiationMessage implements TelnetMessage {
      * @param negotiation the negotiation
      * @param option the option
      */
-    public OptionNegotiationMessage(OptionNegotiation negotiation, byte option) {
+    public OptionNegotiationMessage(final OptionNegotiation negotiation, final byte option) {
         this.negotiation = negotiation;
         this.option = option;
     }

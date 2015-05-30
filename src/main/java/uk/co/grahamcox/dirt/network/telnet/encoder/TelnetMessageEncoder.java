@@ -38,7 +38,7 @@ public final class TelnetMessageEncoder {
      * @return the bytes representing the message
      * @throws IllegalArgumentException if the provided message is not supported
      */
-    public byte[] encode(TelnetMessage message) {
+    public byte[] encode(final TelnetMessage message) {
         return Optional.ofNullable(encoders.get(message.getClass()))
             .map(encoder -> {
                 LOG.debug("Encoding message {} with encoder {}", message, encoder);
@@ -55,7 +55,7 @@ public final class TelnetMessageEncoder {
      * @param telnetMessage the ByteMessage to encode
      * @return the bytes
      */
-    private byte[] encodeByteMessage(TelnetMessage telnetMessage) {
+    private byte[] encodeByteMessage(final TelnetMessage telnetMessage) {
         ByteMessage byteMessage = (ByteMessage)telnetMessage;
         byte[] result;
 

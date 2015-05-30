@@ -129,7 +129,8 @@
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="HiddenField">
-            <property name="severity" value="warning" />
+            <property name="ignoreSetter" value="true"/>
+            <property name="ignoreConstructorParameter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
@@ -163,9 +164,7 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters">
-            <property name="severity" value="warning" />
-        </module>
+        <module name="FinalParameters" />
         <module name="TodoComment"/>
         <module name="UpperEll"/>
         <module name="AnnotationLocation">

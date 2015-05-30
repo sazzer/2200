@@ -11,7 +11,7 @@ public class ByteMessage implements TelnetMessage {
      * Construct the byte message
      * @param value the value of the byte
      */
-    public ByteMessage(byte value) {
+    public ByteMessage(final byte value) {
         this.value = value;
     }
 
