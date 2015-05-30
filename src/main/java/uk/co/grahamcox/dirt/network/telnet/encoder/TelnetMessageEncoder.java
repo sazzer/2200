@@ -16,7 +16,9 @@ import java.util.function.Function;
 public final class TelnetMessageEncoder {
     /** The logger to use */
     private static final Logger LOG = LoggerFactory.getLogger(TelnetMessageEncoder.class);
-    public static final byte IAC = (byte) 0xff;
+
+    /** Byte representing the IAC */
+    private static final byte IAC = (byte) 0xff;
 
     /** The map of encoders to use */
     private final Map<Class<? extends TelnetMessage>, Function<TelnetMessage, byte[]>> encoders;
