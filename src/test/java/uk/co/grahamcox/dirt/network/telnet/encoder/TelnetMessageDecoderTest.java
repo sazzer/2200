@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.Optional;
@@ -41,8 +43,41 @@ public class TelnetMessageDecoderTest {
      */
     @Test
     public void testDecodeEscapedIAC() {
-        Assert.assertEquals(Optional.empty(), decoder.inject(TelnetBytes.IAC));
-        Assert.assertEquals(Optional.of(new ByteMessage(TelnetBytes.IAC)), decoder.inject(TelnetBytes.IAC));
+        assertDecodeBytes(new ByteMessage(TelnetBytes.IAC), TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test decoding an option DO negotiation where the ID is not an IAC
+     */
+    @Test
+    public void testDecodeSimpleNegotiateDo() {
+        getNonIacBytes().forEach(b ->
+            assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.DO, b),
+                TelnetBytes.IAC, TelnetBytes.DO, b));
+    }
+
+    /**
+     * Test decoding an option DO negotiation where the ID is an IAC
+     */
+    @Test
+    public void testDecodeNegotiateDoIAC() {
+        assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.DO, TelnetBytes.IAC),
+            TelnetBytes.IAC, TelnetBytes.DO, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Assert that the given bytes eventually decode to the expected message
+     * @param expected the expected message
+     * @param bytes the bytes to decode
+     */
+    private void assertDecodeBytes(TelnetMessage expected, byte... bytes) {
+        // All of these produce no message
+        for (int i = 0; i < bytes.length - 1; ++i) {
+            Assert.assertEquals(Optional.empty(), decoder.inject(bytes[i]));
+        }
+
+        // This produces the expected message
+        Assert.assertEquals(Optional.of(expected), decoder.inject(bytes[bytes.length - 1]));
     }
 
     /**

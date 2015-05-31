@@ -1,5 +1,7 @@
 package uk.co.grahamcox.dirt.network.telnet;
 
+import java.util.Objects;
+
 /**
  * Telnet Message representing an option negotiation
  */
@@ -34,6 +36,26 @@ public class OptionNegotiationMessage implements TelnetMessage {
      */
     public byte getOption() {
         return option;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OptionNegotiationMessage that = (OptionNegotiationMessage) o;
+        return Objects.equals(option, that.option) &&
+            Objects.equals(negotiation, that.negotiation);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        return Objects.hash(negotiation, option);
     }
 
     /** {@inheritDoc} */
