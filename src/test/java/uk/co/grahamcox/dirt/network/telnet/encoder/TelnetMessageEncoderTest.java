@@ -78,6 +78,72 @@ public class TelnetMessageEncoderTest {
     }
 
     /**
+     * Test that when we encode a Negotiation DONT for any ID that is not an IAC then we get the correct bytes out
+     * The correct bytes are IAC DONT <id>
+     */
+    @Test
+    public void testEncodeSimpleNegotiationDont() {
+        getNonIacBytes().forEach(b -> {
+            OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.DONT, b);
+            assertMessage(message, TelnetBytes.IAC, TelnetBytes.DONT, b);
+        });
+    }
+
+    /**
+     * Test that when we encode a Negotiation DONT for an ID of IAC then we get the correct bytes out
+     * The correct bytes are IAC DONT IAC IAC
+     */
+    @Test
+    public void testEncodeIacNegotiationDont() {
+        OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.DONT, TelnetBytes.IAC);
+        assertMessage(message, TelnetBytes.IAC, TelnetBytes.DONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test that when we encode a Negotiation WILL for any ID that is not an IAC then we get the correct bytes out
+     * The correct bytes are IAC WILL <id>
+     */
+    @Test
+    public void testEncodeSimpleNegotiationWill() {
+        getNonIacBytes().forEach(b -> {
+            OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.WILL, b);
+            assertMessage(message, TelnetBytes.IAC, TelnetBytes.WILL, b);
+        });
+    }
+
+    /**
+     * Test that when we encode a Negotiation WILL for an ID of IAC then we get the correct bytes out
+     * The correct bytes are IAC WILL IAC IAC
+     */
+    @Test
+    public void testEncodeIacNegotiationWill() {
+        OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.WILL, TelnetBytes.IAC);
+        assertMessage(message, TelnetBytes.IAC, TelnetBytes.WILL, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test that when we encode a Negotiation WONT for any ID that is not an IAC then we get the correct bytes out
+     * The correct bytes are IAC WONT <id>
+     */
+    @Test
+    public void testEncodeSimpleNegotiationWont() {
+        getNonIacBytes().forEach(b -> {
+            OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.WONT, b);
+            assertMessage(message, TelnetBytes.IAC, TelnetBytes.WONT, b);
+        });
+    }
+
+    /**
+     * Test that when we encode a Negotiation WONT for an ID of IAC then we get the correct bytes out
+     * The correct bytes are IAC WONT IAC IAC
+     */
+    @Test
+    public void testEncodeIacNegotiationWont() {
+        OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.WONT, TelnetBytes.IAC);
+        assertMessage(message, TelnetBytes.IAC, TelnetBytes.WONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
      * Generate a stream of all the bytes that are not the IAC byte
      * @return the bytes
      */

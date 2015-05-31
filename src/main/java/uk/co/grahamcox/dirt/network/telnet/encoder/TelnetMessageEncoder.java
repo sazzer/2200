@@ -3,10 +3,12 @@ package uk.co.grahamcox.dirt.network.telnet.encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,16 @@ import java.util.function.Function;
 public final class TelnetMessageEncoder {
     /** The logger to use */
     private static final Logger LOG = LoggerFactory.getLogger(TelnetMessageEncoder.class);
+
+    /** The map of Option Negotiation to the Telnet byte */
+    private static final Map<OptionNegotiation, Byte> OPTION_NEGOTIATION_BYTES = new EnumMap<>(OptionNegotiation.class);
+
+    static {
+        OPTION_NEGOTIATION_BYTES.put(OptionNegotiation.DO, TelnetBytes.DO);
+        OPTION_NEGOTIATION_BYTES.put(OptionNegotiation.DONT, TelnetBytes.DONT);
+        OPTION_NEGOTIATION_BYTES.put(OptionNegotiation.WILL, TelnetBytes.WILL);
+        OPTION_NEGOTIATION_BYTES.put(OptionNegotiation.WONT, TelnetBytes.WONT);
+    }
 
     /** The map of encoders to use */
     private final Map<Class<? extends TelnetMessage>, Function<TelnetMessage, List<Byte>>> encoders;
@@ -93,7 +105,7 @@ public final class TelnetMessageEncoder {
 
         List<Byte> result = new ArrayList<>();
         result.add(TelnetBytes.IAC);
-        result.add(TelnetBytes.DO);
+        result.add(OPTION_NEGOTIATION_BYTES.get(negotiationMessage.getNegotiation()));
         result.addAll(encodeId(negotiationMessage.getOption()));
 
         return result;
