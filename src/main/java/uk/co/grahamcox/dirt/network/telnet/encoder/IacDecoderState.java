@@ -25,8 +25,16 @@ public class IacDecoderState implements DecoderState {
      */
     public IacDecoderState() {
         injectMap = new HashMap<>();
-        injectMap.put(TelnetBytes.IAC, () -> new DecoderResult(new NoDecoderState(), new ByteMessage(TelnetBytes.IAC)));
-        injectMap.put(TelnetBytes.DO, () -> new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.DO)));
+        injectMap.put(TelnetBytes.IAC, () ->
+            new DecoderResult(new NoDecoderState(), new ByteMessage(TelnetBytes.IAC)));
+        injectMap.put(TelnetBytes.DO, () ->
+            new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.DO)));
+        injectMap.put(TelnetBytes.DONT, () ->
+            new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.DONT)));
+        injectMap.put(TelnetBytes.WILL, () ->
+            new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.WILL)));
+        injectMap.put(TelnetBytes.WONT, () ->
+            new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.WONT)));
     }
 
     /**

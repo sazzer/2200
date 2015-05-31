@@ -66,6 +66,63 @@ public class TelnetMessageDecoderTest {
     }
 
     /**
+     * Test decoding an option DONT negotiation where the ID is not an IAC
+     */
+    @Test
+    public void testDecodeSimpleNegotiateDont() {
+        getNonIacBytes().forEach(b ->
+            assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.DONT, b),
+                TelnetBytes.IAC, TelnetBytes.DONT, b));
+    }
+
+    /**
+     * Test decoding an option DONT negotiation where the ID is an IAC
+     */
+    @Test
+    public void testDecodeNegotiateDontIAC() {
+        assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.DONT, TelnetBytes.IAC),
+            TelnetBytes.IAC, TelnetBytes.DONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test decoding an option WILL negotiation where the ID is not an IAC
+     */
+    @Test
+    public void testDecodeSimpleNegotiateWill() {
+        getNonIacBytes().forEach(b ->
+            assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.WILL, b),
+                TelnetBytes.IAC, TelnetBytes.WILL, b));
+    }
+
+    /**
+     * Test decoding an option WILL negotiation where the ID is an IAC
+     */
+    @Test
+    public void testDecodeNegotiateWillIAC() {
+        assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.WILL, TelnetBytes.IAC),
+            TelnetBytes.IAC, TelnetBytes.WILL, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test decoding an option WONT negotiation where the ID is not an IAC
+     */
+    @Test
+    public void testDecodeSimpleNegotiateWont() {
+        getNonIacBytes().forEach(b ->
+            assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.WONT, b),
+                TelnetBytes.IAC, TelnetBytes.WONT, b));
+    }
+
+    /**
+     * Test decoding an option WONT negotiation where the ID is an IAC
+     */
+    @Test
+    public void testDecodeNegotiateWontIAC() {
+        assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.WONT, TelnetBytes.IAC),
+            TelnetBytes.IAC, TelnetBytes.WONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
      * Assert that the given bytes eventually decode to the expected message
      * @param expected the expected message
      * @param bytes the bytes to decode
