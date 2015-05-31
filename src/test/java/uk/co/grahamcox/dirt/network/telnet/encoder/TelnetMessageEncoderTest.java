@@ -159,13 +159,70 @@ public class TelnetMessageEncoderTest {
      */
     @Test
     public void testEncodeSubnegotiationSimpleIdSimplePayload() {
-        getNonIacBytes().forEach(id -> {
-            getNonIacBytes().forEach(payload -> {
-                OptionSubNegotiationMessage message = new OptionSubNegotiationMessage(id, new byte[]{payload});
-                assertMessage(message,
-                    TelnetBytes.IAC, TelnetBytes.SB, id, payload, TelnetBytes.IAC, TelnetBytes.SE);
-            });
-        });
+        getNonIacBytes().forEach(id ->
+                getNonIacBytes().forEach(payload -> {
+                    OptionSubNegotiationMessage message = new OptionSubNegotiationMessage(id, new byte[]{payload});
+                    assertMessage(message,
+                        TelnetBytes.IAC, TelnetBytes.SB, id, payload, TelnetBytes.IAC, TelnetBytes.SE);
+                })
+        );
+    }
+
+    /**
+     * Test that when we encode a SubNegotiation for an ID that isn't IAC and has a payload that contains two
+     * bytes that aren't IAC then we get the correct bytes out
+     * The correct bytes are IAC SB <id> <payload1> <payload2> IAC SE
+     */
+    @Test
+    public void testEncodeSubnegotiationSimpleIdSimpleLongPayload() {
+        getNonIacBytes().forEach(id ->
+                getNonIacBytes().forEach(payload1 -> {
+                    getNonIacBytes().forEach(payload2 -> {
+                        OptionSubNegotiationMessage message =
+                            new OptionSubNegotiationMessage(id, new byte[]{payload1, payload2});
+                        assertMessage(message,
+                            TelnetBytes.IAC, TelnetBytes.SB,
+                            id,
+                            payload1, payload2,
+                            TelnetBytes.IAC, TelnetBytes.SE);
+                    });
+                })
+        );
+    }
+
+    /**
+     * Test that when we encode a SubNegotiation for an ID that isn't IAC and has a payload that contains multiple
+     * bytes where one isn't IAC then we get the correct bytes out
+     */
+    @Test
+    public void testEncodeSubnegotiationSimpleIdLongPayload() {
+        getNonIacBytes().forEach(id ->
+                getNonIacBytes().forEach(payload -> {
+                    OptionSubNegotiationMessage message1 =
+                        new OptionSubNegotiationMessage(id, new byte[]{payload, TelnetBytes.IAC});
+                    assertMessage(message1,
+                        TelnetBytes.IAC, TelnetBytes.SB,
+                        id,
+                        payload, TelnetBytes.IAC, TelnetBytes.IAC,
+                        TelnetBytes.IAC, TelnetBytes.SE);
+
+                    OptionSubNegotiationMessage message2 =
+                        new OptionSubNegotiationMessage(id, new byte[]{TelnetBytes.IAC, payload});
+                    assertMessage(message2,
+                        TelnetBytes.IAC, TelnetBytes.SB,
+                        id,
+                        TelnetBytes.IAC, TelnetBytes.IAC, payload,
+                        TelnetBytes.IAC, TelnetBytes.SE);
+
+                    OptionSubNegotiationMessage message3 =
+                        new OptionSubNegotiationMessage(id, new byte[]{TelnetBytes.IAC, payload, TelnetBytes.IAC});
+                    assertMessage(message3,
+                        TelnetBytes.IAC, TelnetBytes.SB,
+                        id,
+                        TelnetBytes.IAC, TelnetBytes.IAC, payload, TelnetBytes.IAC, TelnetBytes.IAC,
+                        TelnetBytes.IAC, TelnetBytes.SE);
+                })
+        );
     }
 
     /**
@@ -224,19 +281,6 @@ public class TelnetMessageEncoderTest {
     private Stream<Byte> getNonIacBytes() {
         return IntStream.range(0, 0xff)
             .mapToObj(i -> (byte)i);
-    }
-
-    /**
-     * Assert that the given message encodes to the given bytes
-     * @param message the message to encode
-     * @param expected the bytes to expect
-     */
-    private void assertMessage(TelnetMessage message, int... expected) {
-        byte[] expectedBytes = new byte[expected.length];
-        for (int i = 0; i < expected.length; ++i) {
-            expectedBytes[i] = (byte)expected[i];
-        }
-        assertMessage(message, expectedBytes);
     }
 
     /**
