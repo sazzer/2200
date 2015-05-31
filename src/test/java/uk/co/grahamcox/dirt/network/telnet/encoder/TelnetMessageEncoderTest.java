@@ -4,7 +4,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Unit tests for the Telnet Message Encoder
@@ -35,13 +40,10 @@ public class TelnetMessageEncoderTest {
      */
     @Test
     public void testEncodeSimpleByte() {
-        for (int i = 0; i < 0xff; ++i) {
-            byte b = (byte)i;
-
+        getNonIacBytes().forEach(b -> {
             ByteMessage byteMessage = new ByteMessage(b);
-            byte[] bytes = encoder.encode(byteMessage);
-            Assert.assertArrayEquals(new byte[]{b}, bytes);
-        }
+            assertMessage(byteMessage, b);
+        });
     }
 
     /**
@@ -49,8 +51,61 @@ public class TelnetMessageEncoderTest {
      */
     @Test
     public void testEncodeIACByte() {
-        ByteMessage byteMessage = new ByteMessage((byte)0xff);
-        byte[] bytes = encoder.encode(byteMessage);
-        Assert.assertArrayEquals(new byte[]{(byte)0xff, (byte)0xff}, bytes);
+        ByteMessage byteMessage = new ByteMessage(TelnetBytes.IAC);
+        assertMessage(byteMessage, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test that when we encode a Negotiation DO for any ID that is not an IAC then we get the correct bytes out
+     * The correct bytes are IAC DO <id>
+     */
+    @Test
+    public void testEncodeSimpleNegotiationDo() {
+        getNonIacBytes().forEach(b -> {
+            OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.DO, b);
+            assertMessage(message, TelnetBytes.IAC, TelnetBytes.DO, b);
+        });
+    }
+
+    /**
+     * Test that when we encode a Negotiation DO for an ID of IAC then we get the correct bytes out
+     * The correct bytes are IAC DO IAC IAC
+     */
+    @Test
+    public void testEncodeIacNegotiationDo() {
+        OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.DO, TelnetBytes.IAC);
+        assertMessage(message, TelnetBytes.IAC, TelnetBytes.DO, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Generate a stream of all the bytes that are not the IAC byte
+     * @return the bytes
+     */
+    private Stream<Byte> getNonIacBytes() {
+        return IntStream.range(0, 0xff)
+            .mapToObj(i -> (byte)i);
+    }
+
+    /**
+     * Assert that the given message encodes to the given bytes
+     * @param message the message to encode
+     * @param expected the bytes to expect
+     */
+    private void assertMessage(TelnetMessage message, int... expected) {
+        byte[] expectedBytes = new byte[expected.length];
+        for (int i = 0; i < expected.length; ++i) {
+            expectedBytes[i] = (byte)expected[i];
+        }
+        assertMessage(message, expectedBytes);
+    }
+
+    /**
+     * Assert that the given message encodes to the given bytes
+     * @param message the message to encode
+     * @param expected the bytes to expect
+     */
+    private void assertMessage(TelnetMessage message, byte... expected) {
+        byte[] bytes = encoder.encode(message);
+        Assert.assertArrayEquals(expected, bytes);
     }
 }

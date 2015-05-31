@@ -3,6 +3,7 @@ package uk.co.grahamcox.dirt.network.telnet.encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.HashMap;
@@ -17,9 +18,6 @@ public final class TelnetMessageEncoder {
     /** The logger to use */
     private static final Logger LOG = LoggerFactory.getLogger(TelnetMessageEncoder.class);
 
-    /** Byte representing the IAC */
-    private static final byte IAC = (byte) 0xff;
-
     /** The map of encoders to use */
     private final Map<Class<? extends TelnetMessage>, Function<TelnetMessage, byte[]>> encoders;
 
@@ -30,6 +28,7 @@ public final class TelnetMessageEncoder {
         encoders = new HashMap<>();
 
         encoders.put(ByteMessage.class, this::encodeByteMessage);
+        encoders.put(OptionNegotiationMessage.class, this::encodeNegotiationMessage);
     }
 
     /**
@@ -59,10 +58,38 @@ public final class TelnetMessageEncoder {
         ByteMessage byteMessage = (ByteMessage)telnetMessage;
         byte[] result;
 
-        if (byteMessage.getValue() == IAC) {
-            result = new byte[]{IAC, byteMessage.getValue()};
+        if (byteMessage.getValue() == TelnetBytes.IAC) {
+            result = new byte[]{TelnetBytes.IAC, byteMessage.getValue()};
         } else {
             result = new byte[]{byteMessage.getValue()};
+        }
+
+        return result;
+    }
+
+    /**
+     * Encode the given Option Negotiation Message to the appropriate bytes
+     * @param telnetMessage the OptionNegotiationMessage to encode
+     * @return the bytes
+     */
+    private byte[] encodeNegotiationMessage(final TelnetMessage telnetMessage) {
+        OptionNegotiationMessage negotiationMessage = (OptionNegotiationMessage)telnetMessage;
+        byte negotiationByte = TelnetBytes.DO;
+        byte[] result;
+
+        if (negotiationMessage.getOption() == TelnetBytes.IAC) {
+            result = new byte[]{
+                TelnetBytes.IAC,
+                negotiationByte,
+                TelnetBytes.IAC,
+                negotiationMessage.getOption()
+            };
+        } else {
+            result = new byte[]{
+                TelnetBytes.IAC,
+                negotiationByte,
+                negotiationMessage.getOption()
+            };
         }
 
         return result;
