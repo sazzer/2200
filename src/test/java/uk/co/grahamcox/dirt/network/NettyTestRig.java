@@ -12,16 +12,31 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.junit.Test;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
+import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
+import uk.co.grahamcox.dirt.network.telnet.encoder.TelnetMessageEncoder;
+import uk.co.grahamcox.dirt.network.telnet.encoder.TelnetNettyEncoder;
 
 /**
  * Created by graham on 30/05/15.
  */
 public class NettyTestRig {
     public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
+
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            System.out.println(msg);
-            ((ByteBuf)msg).release();
+            ByteBuf byteBuf = (ByteBuf)msg;
+            while (byteBuf.isReadable()) {
+                System.out.println(byteBuf.readByte());
+            }
+            byteBuf.release();
+        }
+
+        @Override
+        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+            OptionNegotiationMessage optionNegotiationMessage =
+                new OptionNegotiationMessage(OptionNegotiation.DO, (byte)31);
+            ctx.writeAndFlush(optionNegotiationMessage);
         }
 
         @Override
@@ -43,6 +58,7 @@ public class NettyTestRig {
                 .childHandler(new ChannelInitializer<Channel>() {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
+                        channel.pipeline().addLast(new TelnetNettyEncoder());
                         channel.pipeline().addLast(new DiscardServerHandler());
                     }
                 })
