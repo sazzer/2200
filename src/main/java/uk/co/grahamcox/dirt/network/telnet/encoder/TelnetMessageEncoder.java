@@ -6,7 +6,9 @@ import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -19,7 +21,7 @@ public final class TelnetMessageEncoder {
     private static final Logger LOG = LoggerFactory.getLogger(TelnetMessageEncoder.class);
 
     /** The map of encoders to use */
-    private final Map<Class<? extends TelnetMessage>, Function<TelnetMessage, byte[]>> encoders;
+    private final Map<Class<? extends TelnetMessage>, Function<TelnetMessage, List<Byte>>> encoders;
 
     /**
      * Construct the encoder
@@ -43,6 +45,13 @@ public final class TelnetMessageEncoder {
                 LOG.debug("Encoding message {} with encoder {}", message, encoder);
                 return encoder.apply(message);
             })
+            .map(bytesList -> {
+                byte[] result = new byte[bytesList.size()];
+                for (int i = 0; i < result.length; ++i) {
+                    result[i] = bytesList.get(i);
+                }
+                return result;
+            })
             .orElseThrow(() -> {
                 LOG.error("Requested to encode unknown message class {}", message.getClass());
                 return new IllegalArgumentException("No encoder found for message of type: " + message.getClass());
@@ -50,21 +59,28 @@ public final class TelnetMessageEncoder {
     }
 
     /**
+     * Generate a list of bytes that represent the given byte ID.
+     * This is the single byte, if that byte is not an IAC, or the escaped IAC b if the byte is an IAC
+     * @param b the byte to encode
+     * @return the encoded byte
+     */
+    private List<Byte> encodeId(final byte b) {
+        List<Byte> result = new ArrayList<>();
+        if (b == TelnetBytes.IAC) {
+            result.add(TelnetBytes.IAC);
+        }
+        result.add(b);
+        return result;
+    }
+
+    /**
      * Encode the given ByteMessage to the appropriate bytes
      * @param telnetMessage the ByteMessage to encode
      * @return the bytes
      */
-    private byte[] encodeByteMessage(final TelnetMessage telnetMessage) {
+    private List<Byte> encodeByteMessage(final TelnetMessage telnetMessage) {
         ByteMessage byteMessage = (ByteMessage)telnetMessage;
-        byte[] result;
-
-        if (byteMessage.getValue() == TelnetBytes.IAC) {
-            result = new byte[]{TelnetBytes.IAC, byteMessage.getValue()};
-        } else {
-            result = new byte[]{byteMessage.getValue()};
-        }
-
-        return result;
+        return encodeId(byteMessage.getValue());
     }
 
     /**
@@ -72,25 +88,13 @@ public final class TelnetMessageEncoder {
      * @param telnetMessage the OptionNegotiationMessage to encode
      * @return the bytes
      */
-    private byte[] encodeNegotiationMessage(final TelnetMessage telnetMessage) {
+    private List<Byte> encodeNegotiationMessage(final TelnetMessage telnetMessage) {
         OptionNegotiationMessage negotiationMessage = (OptionNegotiationMessage)telnetMessage;
-        byte negotiationByte = TelnetBytes.DO;
-        byte[] result;
 
-        if (negotiationMessage.getOption() == TelnetBytes.IAC) {
-            result = new byte[]{
-                TelnetBytes.IAC,
-                negotiationByte,
-                TelnetBytes.IAC,
-                negotiationMessage.getOption()
-            };
-        } else {
-            result = new byte[]{
-                TelnetBytes.IAC,
-                negotiationByte,
-                negotiationMessage.getOption()
-            };
-        }
+        List<Byte> result = new ArrayList<>();
+        result.add(TelnetBytes.IAC);
+        result.add(TelnetBytes.DO);
+        result.addAll(encodeId(negotiationMessage.getOption()));
 
         return result;
     }
