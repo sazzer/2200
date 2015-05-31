@@ -3,7 +3,15 @@ package uk.co.grahamcox.dirt.network.telnet.encoder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import uk.co.grahamcox.dirt.network.telnet.AbortOutputMessage;
+import uk.co.grahamcox.dirt.network.telnet.AreYouThereMessage;
+import uk.co.grahamcox.dirt.network.telnet.BreakMessage;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.DataMarkMessage;
+import uk.co.grahamcox.dirt.network.telnet.EraseCharacterMessage;
+import uk.co.grahamcox.dirt.network.telnet.EraseLineMessage;
+import uk.co.grahamcox.dirt.network.telnet.GoAheadMessage;
+import uk.co.grahamcox.dirt.network.telnet.InterruptMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
@@ -120,6 +128,21 @@ public class TelnetMessageDecoderTest {
     public void testDecodeNegotiateWontIAC() {
         assertDecodeBytes(new OptionNegotiationMessage(OptionNegotiation.WONT, TelnetBytes.IAC),
             TelnetBytes.IAC, TelnetBytes.WONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test that all of the other messages - Break, GoAhead, etc - work correctly
+     */
+    @Test
+    public void testOtherMessages() {
+        assertDecodeBytes(new DataMarkMessage(), TelnetBytes.IAC, TelnetBytes.DATA_MARK);
+        assertDecodeBytes(new BreakMessage(), TelnetBytes.IAC, TelnetBytes.BREAK);
+        assertDecodeBytes(new InterruptMessage(), TelnetBytes.IAC, TelnetBytes.INTERRUPT);
+        assertDecodeBytes(new AbortOutputMessage(), TelnetBytes.IAC, TelnetBytes.ABORT_OUTPUT);
+        assertDecodeBytes(new AreYouThereMessage(), TelnetBytes.IAC, TelnetBytes.ARE_YOU_THERE);
+        assertDecodeBytes(new EraseCharacterMessage(), TelnetBytes.IAC, TelnetBytes.ERASE_CHARACTER);
+        assertDecodeBytes(new EraseLineMessage(), TelnetBytes.IAC, TelnetBytes.ERASE_LINE);
+        assertDecodeBytes(new GoAheadMessage(), TelnetBytes.IAC, TelnetBytes.GO_AHEAD);
     }
 
     /**
