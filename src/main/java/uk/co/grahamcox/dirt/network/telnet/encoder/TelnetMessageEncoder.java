@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionSubNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public final class TelnetMessageEncoder {
 
         encoders.put(ByteMessage.class, this::encodeByteMessage);
         encoders.put(OptionNegotiationMessage.class, this::encodeNegotiationMessage);
+        encoders.put(OptionSubNegotiationMessage.class, this::encodeSubnegotiationMessage);
     }
 
     /**
@@ -107,6 +109,27 @@ public final class TelnetMessageEncoder {
         result.add(TelnetBytes.IAC);
         result.add(OPTION_NEGOTIATION_BYTES.get(negotiationMessage.getNegotiation()));
         result.addAll(encodeId(negotiationMessage.getOption()));
+
+        return result;
+    }
+
+    /**
+     * Encode the given Option Subnegotiation Message to the appropriate bytes
+     * @param telnetMessage the OptionSubNegotiationMessage to encode
+     * @return the bytes
+     */
+    private List<Byte> encodeSubnegotiationMessage(final TelnetMessage telnetMessage) {
+        OptionSubNegotiationMessage subNegotiationMessage = (OptionSubNegotiationMessage)telnetMessage;
+
+        List<Byte> result = new ArrayList<>();
+        result.add(TelnetBytes.IAC);
+        result.add(TelnetBytes.SB);
+        result.addAll(encodeId(subNegotiationMessage.getOption()));
+        for (byte b : subNegotiationMessage.getSubnegotiation()) {
+            result.addAll(encodeId(b));
+        }
+        result.add(TelnetBytes.IAC);
+        result.add(TelnetBytes.SE);
 
         return result;
     }

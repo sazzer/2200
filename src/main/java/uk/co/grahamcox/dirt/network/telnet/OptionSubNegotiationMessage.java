@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * Telnet Message representing an option subnegotiation
  */
-public class OptionSubNegotiation implements TelnetMessage {
+public class OptionSubNegotiationMessage implements TelnetMessage {
     /** The option ID */
     private final byte option;
 
@@ -17,7 +17,7 @@ public class OptionSubNegotiation implements TelnetMessage {
      * @param option the option ID
      * @param subnegotiation the subnegotiation data
      */
-    public OptionSubNegotiation(final byte option, final byte[] subnegotiation) {
+    public OptionSubNegotiationMessage(final byte option, final byte[] subnegotiation) {
         this.option = option;
         this.subnegotiation = new byte[subnegotiation.length];
         System.arraycopy(subnegotiation, 0, this.subnegotiation, 0, subnegotiation.length);

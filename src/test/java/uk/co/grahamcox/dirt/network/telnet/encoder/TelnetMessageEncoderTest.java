@@ -6,6 +6,7 @@ import org.junit.Test;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
+import uk.co.grahamcox.dirt.network.telnet.OptionSubNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.stream.IntStream;
@@ -141,6 +142,56 @@ public class TelnetMessageEncoderTest {
     public void testEncodeIacNegotiationWont() {
         OptionNegotiationMessage message = new OptionNegotiationMessage(OptionNegotiation.WONT, TelnetBytes.IAC);
         assertMessage(message, TelnetBytes.IAC, TelnetBytes.WONT, TelnetBytes.IAC, TelnetBytes.IAC);
+    }
+
+    /**
+     * Test that when we encode a SubNegotiation for an ID that isn't IAC and has a payload that contains a single
+     * byte that isn't IAC then we get the correct bytes out
+     * The correct bytes are IAC SB <id> <payload> IAC SE
+     */
+    @Test
+    public void testEncodeSubnegotiationSimpleIdSimplePayload() {
+        getNonIacBytes().forEach(id -> {
+            getNonIacBytes().forEach(payload -> {
+                OptionSubNegotiationMessage message = new OptionSubNegotiationMessage(id, new byte[]{payload});
+                assertMessage(message,
+                    TelnetBytes.IAC, TelnetBytes.SB, id, payload, TelnetBytes.IAC, TelnetBytes.SE);
+            });
+        });
+    }
+
+    /**
+     * Test that when we encode a SubNegotiation for an ID that is IAC and has a payload that contains a single
+     * byte that isn't IAC then we get the correct bytes out
+     * The correct bytes are IAC SB IAC <id> <payload> IAC SE
+     */
+    @Test
+    public void testEncodeSubnegotiationIacIdSimplePayload() {
+        getNonIacBytes().forEach(payload -> {
+            OptionSubNegotiationMessage message = new OptionSubNegotiationMessage(TelnetBytes.IAC, new byte[]{payload});
+            assertMessage(message,
+                TelnetBytes.IAC, TelnetBytes.SB,
+                TelnetBytes.IAC, TelnetBytes.IAC,
+                payload,
+                TelnetBytes.IAC, TelnetBytes.SE);
+        });
+    }
+
+    /**
+     * Test that when we encode a SubNegotiation for an ID that isn't IAC and has a payload that contains a single
+     * byte that is IAC then we get the correct bytes out
+     * The correct bytes are IAC SB <id> IAC <payload> IAC SE
+     */
+    @Test
+    public void testEncodeSubnegotiationSimpleIdIACPayload() {
+        getNonIacBytes().forEach(id -> {
+            OptionSubNegotiationMessage message = new OptionSubNegotiationMessage(id, new byte[]{TelnetBytes.IAC});
+            assertMessage(message,
+                TelnetBytes.IAC, TelnetBytes.SB,
+                id,
+                TelnetBytes.IAC, TelnetBytes.IAC,
+                TelnetBytes.IAC, TelnetBytes.SE);
+        });
     }
 
     /**
