@@ -2,13 +2,22 @@ package uk.co.grahamcox.dirt.network.telnet.encoder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import uk.co.grahamcox.dirt.network.telnet.AbortOutputMessage;
+import uk.co.grahamcox.dirt.network.telnet.AreYouThereMessage;
+import uk.co.grahamcox.dirt.network.telnet.BreakMessage;
 import uk.co.grahamcox.dirt.network.telnet.ByteMessage;
+import uk.co.grahamcox.dirt.network.telnet.DataMarkMessage;
+import uk.co.grahamcox.dirt.network.telnet.EraseCharacterMessage;
+import uk.co.grahamcox.dirt.network.telnet.EraseLineMessage;
+import uk.co.grahamcox.dirt.network.telnet.GoAheadMessage;
+import uk.co.grahamcox.dirt.network.telnet.InterruptMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionSubNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +54,14 @@ public final class TelnetMessageEncoder {
         encoders.put(ByteMessage.class, this::encodeByteMessage);
         encoders.put(OptionNegotiationMessage.class, this::encodeNegotiationMessage);
         encoders.put(OptionSubNegotiationMessage.class, this::encodeSubnegotiationMessage);
+        encoders.put(DataMarkMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.DATA_MARK));
+        encoders.put(BreakMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.BREAK));
+        encoders.put(InterruptMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.INTERRUPT));
+        encoders.put(AbortOutputMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.ABORT_OUTPUT));
+        encoders.put(AreYouThereMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.ARE_YOU_THERE));
+        encoders.put(EraseCharacterMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.ERASE_CHARACTER));
+        encoders.put(EraseLineMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.ERASE_LINE));
+        encoders.put(GoAheadMessage.class, (m) -> Arrays.asList(TelnetBytes.IAC, TelnetBytes.GO_AHEAD));
     }
 
     /**
