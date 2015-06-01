@@ -43,6 +43,8 @@ public class IacDecoderState implements DecoderState {
             new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.WILL)));
         injectMap.put(TelnetBytes.WONT, () ->
             new DecoderResult(new OptionNegotiationDecoderState(OptionNegotiation.WONT)));
+        injectMap.put(TelnetBytes.SB, () ->
+            new DecoderResult(new StartOptionSubnegotiationDecoderState()));
         injectMap.put(TelnetBytes.DATA_MARK, () ->
             new DecoderResult(new NoDecoderState(), new DataMarkMessage()));
         injectMap.put(TelnetBytes.BREAK, () ->

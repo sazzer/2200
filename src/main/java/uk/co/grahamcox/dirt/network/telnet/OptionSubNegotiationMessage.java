@@ -1,6 +1,7 @@
 package uk.co.grahamcox.dirt.network.telnet;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Telnet Message representing an option subnegotiation
@@ -39,6 +40,26 @@ public class OptionSubNegotiationMessage implements TelnetMessage {
         byte[] result = new byte[this.subnegotiation.length];
         System.arraycopy(subnegotiation, 0, result, 0, subnegotiation.length);
         return result;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        OptionSubNegotiationMessage that = (OptionSubNegotiationMessage) o;
+        return Objects.equals(option, that.option) &&
+            Arrays.equals(subnegotiation, that.subnegotiation);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        return Objects.hash(option, subnegotiation);
     }
 
     /** {@inheritDoc} */
