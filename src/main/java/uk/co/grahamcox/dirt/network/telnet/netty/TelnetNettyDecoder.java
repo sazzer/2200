@@ -26,10 +26,11 @@ public class TelnetNettyDecoder extends ByteToMessageDecoder {
      * @param ctx the context
      * @param in the input bytes
      * @param out the output list of messages
-     * @throws Exception
      */
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(final ChannelHandlerContext ctx,
+                          final ByteBuf in,
+                          final List<Object> out) {
         while (in.isReadable()) {
             decoder.inject(in.readByte())
                 .ifPresent(out::add);
