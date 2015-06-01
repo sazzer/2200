@@ -1,4 +1,4 @@
-package uk.co.grahamcox.dirt.network.telnet.encoder;
+package uk.co.grahamcox.dirt.network.telnet.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -6,6 +6,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import uk.co.grahamcox.dirt.network.telnet.TelnetMessage;
+import uk.co.grahamcox.dirt.network.telnet.encoder.TelnetMessageEncoder;
 
 /**
  * Netty MessageToByteEncoder to use to encode a TelnetMessage into bytes

@@ -14,8 +14,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import org.junit.Test;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
-import uk.co.grahamcox.dirt.network.telnet.encoder.TelnetMessageEncoder;
-import uk.co.grahamcox.dirt.network.telnet.encoder.TelnetNettyEncoder;
+import uk.co.grahamcox.dirt.network.telnet.netty.TelnetNettyDecoder;
+import uk.co.grahamcox.dirt.network.telnet.netty.TelnetNettyEncoder;
 
 /**
  * Created by graham on 30/05/15.
@@ -25,11 +25,7 @@ public class NettyTestRig {
 
         @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            ByteBuf byteBuf = (ByteBuf)msg;
-            while (byteBuf.isReadable()) {
-                System.out.println(byteBuf.readByte());
-            }
-            byteBuf.release();
+            System.out.println(msg);
         }
 
         @Override
@@ -59,6 +55,7 @@ public class NettyTestRig {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         channel.pipeline().addLast(new TelnetNettyEncoder());
+                        channel.pipeline().addLast(new TelnetNettyDecoder());
                         channel.pipeline().addLast(new DiscardServerHandler());
                     }
                 })
