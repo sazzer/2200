@@ -15,6 +15,6 @@ class TelnetServerChannelInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(final Channel channel) {
         channel.pipeline().addLast(new TelnetNettyEncoder());
         channel.pipeline().addLast(new TelnetNettyDecoder());
-        channel.pipeline().addLast(new TelnetGameHandler());
+        channel.pipeline().addLast(new TelnetHandler());
     }
 }

@@ -6,11 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The actual main handle that is used as the client to the game world
+ * Handler that handles all of the telnet nonsense and makes sense of it
  */
-public class TelnetGameHandler extends ChannelInboundHandlerAdapter {
+public class TelnetHandler extends ChannelInboundHandlerAdapter {
     /** The logger to use */
-    private static final Logger LOG = LoggerFactory.getLogger(TelnetGameHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TelnetHandler.class);
 
     /**
      * Callback for when the handler becomes active - i.e. when the client has connected
@@ -42,7 +42,7 @@ public class TelnetGameHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
-        super.channelRead(ctx, msg);
         LOG.debug("Received message: {}", msg);
+        super.channelRead(ctx, "Hello, World");
     }
 }
