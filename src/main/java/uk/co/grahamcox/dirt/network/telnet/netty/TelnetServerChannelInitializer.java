@@ -29,6 +29,7 @@ class TelnetServerChannelInitializer extends ChannelInitializer<Channel> {
         channel.pipeline().addLast(new TelnetNettyEncoder());
         channel.pipeline().addLast(new TelnetNettyDecoder());
         channel.pipeline().addLast(new LoggingHandler());
-        channel.pipeline().addLast(new TelnetHandler(optionManager));
+        channel.pipeline().addLast(new TelnetOptionNegotiationHandler(optionManager));
+        channel.pipeline().addLast(new TelnetOptionSubnegotiationHandler(optionManager));
     }
 }
