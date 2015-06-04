@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Manager of all the options for a specific connection
@@ -62,6 +63,14 @@ public class OptionManager {
         } else {
             LOG.warn("Subnegotiation of unknown option {}", id);
         }
+    }
+
+    /**
+     * Get a stream of all the options that we support
+     * @return the set of all the options we support
+     */
+    public Stream<TelnetOption> getAllOptions() {
+        return optionsById.values().stream();
     }
 
     /**
