@@ -22,7 +22,7 @@ public class TelnetHandler extends ChannelInboundHandlerAdapter {
      * Construct the handler
      * @param optionManager the option manager to use
      */
-    public TelnetHandler(OptionManager optionManager) {
+    public TelnetHandler(final OptionManager optionManager) {
         this.optionManager = optionManager;
     }
 
