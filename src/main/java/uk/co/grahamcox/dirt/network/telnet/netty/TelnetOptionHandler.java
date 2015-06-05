@@ -6,6 +6,7 @@ import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.OptionSubNegotiationMessage;
 import uk.co.grahamcox.dirt.network.telnet.options.OptionManager;
+import uk.co.grahamcox.dirt.network.telnet.options.OptionTarget;
 
 /**
  * Channel Handler to handle Telnet Options
@@ -29,7 +30,18 @@ public class TelnetOptionHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(final ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().writeAndFlush(new OptionNegotiationMessage(OptionNegotiation.WILL, (byte) 1));
+        optionManager.getAllOptions().forEach(o -> {
+            OptionNegotiation negotiation;
+            if (o.getTarget() == OptionTarget.CLIENT) {
+                negotiation = OptionNegotiation.DO;
+            } else {
+                negotiation = OptionNegotiation.WILL;
+            }
+
+            ctx.channel().write(new OptionNegotiationMessage(negotiation, o.getId()));
+        });
+
+        ctx.channel().flush();
         super.channelActive(ctx);
     }
 

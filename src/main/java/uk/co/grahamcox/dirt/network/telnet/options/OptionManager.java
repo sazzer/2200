@@ -5,10 +5,9 @@ import org.slf4j.LoggerFactory;
 import uk.co.grahamcox.dirt.network.telnet.OptionNegotiation;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -18,23 +17,17 @@ public class OptionManager {
     /** The logger to use */
     private static final Logger LOG = LoggerFactory.getLogger(OptionManager.class);
 
-    /** Cache of the options by their ID */
-    private final transient Map<Byte, TelnetOption> optionsById;
+    /** Collection of option details */
+    private final Set<OptionDetails> optionDetails;
 
     /**
      * Construct the option manager
      * @param options the options
      */
     public OptionManager(final Set<TelnetOption> options) {
-        optionsById = new HashMap<>();
-
-        options.stream().filter(o -> {
-            OptionId optionId = o.getClass().getAnnotation(OptionId.class);
-            return optionId != null;
-        }).forEach(option -> {
-            OptionId optionId = option.getClass().getAnnotation(OptionId.class);
-            optionsById.put(optionId.value(), option);
-        });
+        optionDetails = options.stream()
+            .map(OptionDetails::new)
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -69,8 +62,8 @@ public class OptionManager {
      * Get a stream of all the options that we support
      * @return the set of all the options we support
      */
-    public Stream<TelnetOption> getAllOptions() {
-        return optionsById.values().stream();
+    public Stream<OptionDetails> getAllOptions() {
+        return optionDetails.stream();
     }
 
     /**
@@ -79,6 +72,9 @@ public class OptionManager {
      * @return the option
      */
     private Optional<TelnetOption> findOption(final byte id) {
-        return Optional.ofNullable(optionsById.get(id));
+        return optionDetails.stream()
+            .filter(option -> option.getId() == id)
+            .map(OptionDetails::getOption)
+            .findFirst();
     }
 }

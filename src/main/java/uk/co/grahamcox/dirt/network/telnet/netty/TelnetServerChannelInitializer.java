@@ -5,6 +5,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.handler.logging.LoggingHandler;
 import uk.co.grahamcox.dirt.network.telnet.options.EchoOption;
 import uk.co.grahamcox.dirt.network.telnet.options.OptionManager;
+import uk.co.grahamcox.dirt.network.telnet.options.SuppressGoAheadOption;
 import uk.co.grahamcox.dirt.network.telnet.options.TelnetOption;
 
 import java.util.Set;
@@ -21,7 +22,8 @@ class TelnetServerChannelInitializer extends ChannelInitializer<Channel> {
      */
     @Override
     protected void initChannel(final Channel channel) {
-        Set<TelnetOption> options = Stream.of(new EchoOption())
+        Set<TelnetOption> options = Stream.of(new EchoOption(),
+            new SuppressGoAheadOption())
             .collect(Collectors.toSet());
 
         OptionManager optionManager = new OptionManager(options);

@@ -1,12 +1,12 @@
 package uk.co.grahamcox.dirt.network.telnet.options;
 
 /**
- * Details of the Echo Option
+ * Details of the Suppress Go Ahead Option
  */
-@Option(id = EchoOption.OPTION_ID, target = OptionTarget.SERVER)
-public class EchoOption implements TelnetOption {
+@Option(id = SuppressGoAheadOption.OPTION_ID, target = OptionTarget.CLIENT)
+public class SuppressGoAheadOption implements TelnetOption {
     /** The ID of the Option */
-    public static final byte OPTION_ID = 1;
+    public static final byte OPTION_ID = 3;
 
     /**
      * Handle a SubNegotiation being received

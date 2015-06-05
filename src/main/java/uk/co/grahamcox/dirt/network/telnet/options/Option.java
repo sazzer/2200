@@ -10,7 +10,10 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface OptionId {
+public @interface Option {
     /** The ID of the option */
-    byte value();
+    byte id();
+
+    /** The target of the option */
+    OptionTarget target() default OptionTarget.CLIENT;
 }
