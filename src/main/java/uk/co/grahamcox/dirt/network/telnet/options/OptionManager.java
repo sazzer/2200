@@ -31,14 +31,30 @@ public class OptionManager {
     }
 
     /**
+     * Record that we sent the given negotiation to the client
+     * @param id the ID of the Option
+     * @param negotiation the negotiation
+     */
+    public void sentNegotiation(final byte id, final OptionNegotiation negotiation) {
+        Optional<OptionDetails> option = findOption(id);
+        if (option.isPresent()) {
+            LOG.debug("Negotiation sent for option {}: {}", option, negotiation);
+            option.get().sentNegotiation(negotiation);
+        } else {
+            LOG.warn("Negotiation sent for unknown option {}: {}", id, negotiation);
+        }
+    }
+
+    /**
      * Handle negotiation of an option
      * @param id the ID of the Option
      * @param negotiation the negotiation
      */
     public void handleNegotiation(final byte id, final OptionNegotiation negotiation) {
-        Optional<TelnetOption> option = findOption(id);
+        Optional<OptionDetails> option = findOption(id);
         if (option.isPresent()) {
             LOG.debug("Negotiation of option {}: {}", option, negotiation);
+            option.get().receivedNegotiation(negotiation);
         } else {
             LOG.warn("Negotiation of unknown option {}: {}", id, negotiation);
         }
@@ -50,7 +66,7 @@ public class OptionManager {
      * @param payload the payload of the subnegotiation
      */
     public void handleSubnegotiation(final byte id, final byte[] payload) {
-        Optional<TelnetOption> option = findOption(id);
+        Optional<OptionDetails> option = findOption(id);
         if (option.isPresent()) {
             LOG.debug("Subnegotiation of option {}: {}", option, Arrays.toString(payload));
         } else {
@@ -71,10 +87,9 @@ public class OptionManager {
      * @param id the ID
      * @return the option
      */
-    private Optional<TelnetOption> findOption(final byte id) {
+    private Optional<OptionDetails> findOption(final byte id) {
         return optionDetails.stream()
             .filter(option -> option.getId() == id)
-            .map(OptionDetails::getOption)
             .findFirst();
     }
 }

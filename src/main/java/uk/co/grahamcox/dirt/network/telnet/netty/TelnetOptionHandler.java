@@ -59,8 +59,10 @@ public class TelnetOptionHandler extends ChannelInboundHandlerAdapter {
      * @param negotiation the negotiation
      */
     private void negotiateOption(final OptionDetails option, final OptionNegotiation negotiation) {
-        channel.ifPresent(c ->
-                c.write(new OptionNegotiationMessage(negotiation, option.getId()))
+        channel.ifPresent(c -> {
+                c.write(new OptionNegotiationMessage(negotiation, option.getId()));
+                optionManager.sentNegotiation(option.getId(), negotiation);
+            }
         );
     }
     /**
