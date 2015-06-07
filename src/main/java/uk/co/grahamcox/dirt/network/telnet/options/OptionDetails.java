@@ -104,7 +104,10 @@ public class OptionDetails {
     public boolean isActive() {
         boolean active = false;
         if (sentNegotiation.isPresent() && receivedNegotiation.isPresent()) {
-            active = true;
+            OptionNegotiation sent = sentNegotiation.get();
+            OptionNegotiation received = receivedNegotiation.get();
+            active = (sent == OptionNegotiation.WILL && received == OptionNegotiation.DO) ||
+                (sent == OptionNegotiation.DO && received == OptionNegotiation.WILL);
         }
         return active;
     }
