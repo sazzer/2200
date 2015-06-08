@@ -4,7 +4,7 @@
     <groupId>uk.co.grahamcox.dirt</groupId>
     <artifactId>dirt</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <name>Worldbuilder</name>
     <url>http://github.com/sazzer/2200</url>
     <inceptionYear>2015</inceptionYear>
@@ -37,15 +37,53 @@
         <cargo.port.http>8080</cargo.port.http>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.jackson>2.5.3</version.jackson>
         <version.jdk>1.8</version.jdk>
         <version.maven>3.0.5</version.maven>
         <version.slf4j>1.7.12</version.slf4j>
+        <version.spring>4.1.6.RELEASE</version.spring>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${version.jackson}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${version.slf4j}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${version.spring}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${version.spring}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${version.spring}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -206,11 +244,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.4</version>
                 <executions>
@@ -252,6 +285,11 @@
                 <configuration>
                     <argLine>${surefireArgLine}</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
