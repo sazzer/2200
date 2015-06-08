@@ -37,6 +37,8 @@
         <version.jackson>2.5.3</version.jackson>
         <version.jdk>1.8</version.jdk>
         <version.maven>3.0.5</version.maven>
+        <version.nodejs>0.12.4</version.nodejs>
+        <version.npm>2.11.2</version.npm>
         <version.slf4j>1.7.12</version.slf4j>
         <version.spring>4.1.6.RELEASE</version.spring>
     </properties>
@@ -142,6 +144,45 @@
     </pluginRepositories>
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>0.0.22</version>
+                <executions>
+                    <execution>
+                        <id>install-node</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install-npm-packages</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>grunt</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>--verbose</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nodeVersion>v${version.nodejs}</nodeVersion>
+                    <npmVersion>${version.npm}</npmVersion>
+                    <workingDirectory>${project.build.directory}/frontend</workingDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.google.code.sortpom</groupId>
                 <artifactId>maven-sortpom-plugin</artifactId>
@@ -269,6 +310,28 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>copy-frontend-to-target</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/frontend</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/frontend</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>*.json</include>
+                                        <include>*.js</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
