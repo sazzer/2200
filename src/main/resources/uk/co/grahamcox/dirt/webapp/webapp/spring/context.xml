@@ -8,12 +8,6 @@
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
        <mvc:annotation-driven />
-       <mvc:resources mapping="/resources/**"
-                      location="classpath:/resources/"
-                      cache-period="10000" />
-       <mvc:resources mapping="/javascript/**"
-                      location="classpath:/javascript/"
-                      cache-period="10000" />
 
        <context:property-placeholder />
 

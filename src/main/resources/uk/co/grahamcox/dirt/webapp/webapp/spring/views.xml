@@ -21,5 +21,11 @@
         <property name="cacheSeconds" value="3" />
     </bean>
 
+    <mvc:resources mapping="/resources/**"
+                   location="classpath:/resources/"
+                   cache-period="10000"
+                   order="0" />
+    <mvc:view-controller path="/" view-name="/index" />
+    <mvc:view-controller path="/**" view-name="/index" />
 </beans>
 
