@@ -9,9 +9,8 @@
     "time-grunt": "~1.2.1",
     "grunt-bower-task": "~0.4.0",
     "webpack": "~1.9.10",
-    "grunt-webpack": "~1.0.8"
+    "grunt-webpack": "~1.0.8",
+    "grunt-sass": "~1.0.0"
   },
-  "dependencies": {
-  }  
+  "dependencies": {}
 }
-
