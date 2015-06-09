@@ -9,6 +9,9 @@ module.exports = {
     },
     module: {
         loaders: [
+            { test: /\.js$/, loaders: [
+                '${project.build.directory}/frontend/node_modules/babel-loader'
+            ]}
         ]
     },
     resolve: {

@@ -2,6 +2,7 @@
   "name": "${project.build.finalName}",
   "version": "${project.version}",
   "devDependencies": {
+    "babel-loader": "~5.0.0",
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
     "jit-grunt": "~0.9.1",
