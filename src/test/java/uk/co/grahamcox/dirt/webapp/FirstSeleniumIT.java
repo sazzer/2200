@@ -1,6 +1,6 @@
 package uk.co.grahamcox.dirt.webapp;
 
-import org.junit.Assert;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 /**
@@ -11,6 +11,9 @@ public class FirstSeleniumIT {
     public void test() {
         String dirtUrl = System.getProperty("dirtUrl");
         System.out.println(dirtUrl);
-        Assert.assertNotNull(dirtUrl);
+        Assertions.assertThat(dirtUrl)
+            .isNotNull()
+            .isNotEmpty()
+            .startsWith("http://localhost");
     }
 }
