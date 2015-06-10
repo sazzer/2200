@@ -13,5 +13,6 @@
     </head>
     <body>
         <script src="${javascript}" type="text/javascript"></script>
+        <div id="homepage">Hello</div>
     </body>
 </html>
