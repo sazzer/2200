@@ -516,6 +516,11 @@
                                 <goals>
                                     <goal>integration-test</goal>
                                 </goals>
+                                <configuration>
+                                    <systemProperties>
+                                        <dirtUrl>http://localhost:${jetty.port.http}/</dirtUrl>
+                                    </systemProperties>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>verify-integration-test</id>
