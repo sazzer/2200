@@ -1,5 +1,6 @@
 package uk.co.grahamcox.dirt.webapp;
 
+import java.util.concurrent.TimeUnit;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -14,7 +15,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
  */
 public class FirstSeleniumIT {
     @Test
-    public void test() {
+    public void test() throws InterruptedException {
         String dirtUrl = System.getProperty("test.url");
         String binary = System.getProperty("phantomjs.binary");
         DesiredCapabilities DesireCaps = new DesiredCapabilities();
@@ -22,10 +23,12 @@ public class FirstSeleniumIT {
         WebDriver driver=new PhantomJSDriver(DesireCaps);
 
         driver.get(dirtUrl);
+        TimeUnit.SECONDS.sleep(2);
+
         WebElement homepage = driver.findElement(By.id("homepage"));
         Assertions.assertThat(homepage.getText())
             .isNotNull()
             .isNotEmpty()
-            .isEqualTo("Hello");
+            .isEqualTo("Hello, Graham");
     }
 }

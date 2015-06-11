@@ -1,5 +1,12 @@
-const msg = "Hello, World!";
+import {Stomp} from 'stomp-websocket';
 
-let fn = () => alert(msg);
+const client = Stomp.client('ws://' + location.host + '/hello');
 
-fn();
+client.connect(undefined, undefined, () => {
+    client.subscribe('/topic/greetings', (message) => {
+        const greeting = JSON.parse(message.body).greeting;
+        document.getElementById("homepage").innerText = greeting;
+    });
+
+    client.send('/app/hello', {}, JSON.stringify({name: 'Graham'}));
+});
