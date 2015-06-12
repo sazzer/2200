@@ -11,6 +11,12 @@ module.exports = {
         loaders: [ {
             test: /\.js$/,
             loaders: [ "${project.build.directory}/frontend/node_modules/babel-loader" ]
+        }, {
+            test: /\.jsx$/,
+            loaders: [
+                "${project.build.directory}/frontend/node_modules/jsx-loader",
+                "${project.build.directory}/frontend/node_modules/babel-loader"
+            ]
         } ]
     },
     resolve: {
@@ -26,7 +32,8 @@ module.exports = {
     plugins: [ 
         new webpack.dependencies.LabeledModulesPlugin(), 
         new webpack.ProvidePlugin({
-            'jQuery': 'jquery'
+            'jQuery': 'jquery',
+            'React': 'react'
         }),
         new webpack.ResolverPlugin(new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", [ "main" ])), 
         new webpack.DefinePlugin({ VERSION: JSON.stringify("${project.version}") }) 

@@ -13,6 +13,5 @@
     </head>
     <body>
         <script src="${resources}/javascript/main.bundle.js" type="text/javascript"></script>
-        <div id="homepage">Hello</div>
     </body>
 </html>
