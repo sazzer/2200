@@ -25,7 +25,9 @@ module.exports = {
     },
     plugins: [ 
         new webpack.dependencies.LabeledModulesPlugin(), 
-        new webpack.ProvidePlugin({}), 
+        new webpack.ProvidePlugin({
+            'jQuery': 'jquery'
+        }),
         new webpack.ResolverPlugin(new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin("bower.json", [ "main" ])), 
         new webpack.DefinePlugin({ VERSION: JSON.stringify("${project.version}") }) 
     ]

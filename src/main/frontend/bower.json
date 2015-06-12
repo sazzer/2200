@@ -2,6 +2,7 @@
   "name": "${project.artifactId}",
   "version": "${project.version}",
   "dependencies": {
-    "stomp-websocket": "~2.3.4"
+    "stomp-websocket": "~2.3.4",
+    "bootstrap": "~3.3.4"
   }
 }

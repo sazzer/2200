@@ -1,4 +1,5 @@
 import {Stomp} from 'stomp-websocket';
+import 'bootstrap';
 
 const client = Stomp.client('ws://' + location.host + '/hello');
 

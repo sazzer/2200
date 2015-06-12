@@ -7,12 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <c:url var="css" value="/resources/css/main.bundle.css" />
-        <c:url var="javascript" value="/resources/javascript/main.bundle.js" />
-        <link href="${css}" type="text/css" rel="stylesheet" />
+        <c:url var="resources" value="/resources" />
+        <link href="${resources}/external/bootstrap/bootstrap.css" type="text/css" rel="stylesheet" />
+        <link href="${resources}/css/main.bundle.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
-        <script src="${javascript}" type="text/javascript"></script>
+        <script src="${resources}/javascript/main.bundle.js" type="text/javascript"></script>
         <div id="homepage">Hello</div>
     </body>
 </html>
