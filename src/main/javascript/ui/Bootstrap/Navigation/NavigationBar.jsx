@@ -13,11 +13,17 @@ export const NavigationBar = React.createClass({
     },
 
     render: function() {
+        let leftBars = this.props.children
+            .filter(child => !child.props.right);
+        let rightBars = this.props.children
+            .filter(child => child.props.right)
+            .reverse();
+
         return <nav className="navbar navbar-default navbar-static-top">
             <div className="container">
                 <div className="navbar-header">
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span className="sr-only">Toggle Navigation</span>
+                        <span className="sr-only">{this.getIntlMessage('Bootstrap.NavigationBar.toggle')}</span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
@@ -25,7 +31,8 @@ export const NavigationBar = React.createClass({
                     <a className="navbar-brand" href="#">{this.getIntlMessage(this.props.brand)}</a>
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
-                    {this.props.children}
+                    {leftBars}
+                    {rightBars}
                 </div>
             </div>
         </nav>;

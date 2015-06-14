@@ -2,13 +2,13 @@ import React from 'react';
 import ReactIntl from 'react-intl';
 
 export const NavigationLink = React.createClass({
+    mixins: [ReactIntl.IntlMixin],
+
     propTypes: {
         label: React.PropTypes.string.required
     },
 
     render: function() {
-        const labelText = this.props.label;
-
-        return <li><a href="#">{labelText}</a></li>;
+        return <li><a href="#">{this.getIntlMessage(this.props.label)}</a></li>;
     }
 });

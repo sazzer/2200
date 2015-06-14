@@ -1,5 +1,20 @@
 {
     "page": {
-        "title": "Dirt 2200"
+        "title": "Dirt 2200",
+        "menu": {
+            "help": {
+                "label": "Help"
+            },
+            "account": {
+                "profile": "My Account",
+                "characters": "Characters",
+                "logout": "Log Out"
+            }
+        }
+    },
+    "Bootstrap": {
+        "NavigationBar": {
+            "toggle": "Toggle Navigation"
+        }
     }
 }

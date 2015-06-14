@@ -10,17 +10,14 @@ export const HeaderBar = React.createClass({
      */
     render: function() {
         return <NavigationBar brand="page.title">
-            <NavigationArea>
-                <NavigationLink label="Home" />
-                <NavigationLink label="About" />
-                <NavigationLink label="Contact" />
+            <NavigationArea right>
+                <NavigationDropdown label="page.menu.help.label">
+                </NavigationDropdown>
             </NavigationArea>
             <NavigationArea right>
-                <NavigationDropdown label="Dropdown">
-                    <NavigationLink label="Action" />
-                    <NavigationLink label="Anothe rAction" />
-                    <NavigationLink label="Something Else Here" />
-                </NavigationDropdown>
+                <NavigationLink label="page.menu.account.profile" />
+                <NavigationLink label="page.menu.account.characters" />
+                <NavigationLink label="page.menu.account.logout" />
             </NavigationArea>
         </NavigationBar>;
     }
