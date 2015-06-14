@@ -12,6 +12,9 @@ export const NavigationBar = React.createClass({
         brand: React.PropTypes.string.required
     },
 
+    /**
+     * Render the Navigation Bar
+     */
     render: function() {
         let leftBars = this.props.children
             .filter(child => !child.props.right);
