@@ -20,7 +20,10 @@ module.exports = {
         } ]
     },
     resolve: {
-        root: [ "${project.build.directory}/frontend/bower_components" ],
+        root: [
+            "${project.basedir}/src/main/javascript",
+            "${project.build.directory}/frontend/bower_components",
+        ],
         extensions: [ "", ".js", ".jsx", ".json" ],
         alias: {}
     },
