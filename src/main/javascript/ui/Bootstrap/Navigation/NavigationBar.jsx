@@ -1,6 +1,17 @@
 import React from 'react';
+import ReactIntl from 'react-intl';
 
+/**
+ * Bootstrap Navigation Bar
+ */
 export const NavigationBar = React.createClass({
+    mixins: [ReactIntl.IntlMixin],
+
+    propTypes: {
+        /** The message key for the label to display as the navigation bar branding */
+        brand: React.PropTypes.string.required
+    },
+
     render: function() {
         return <nav className="navbar navbar-default navbar-static-top">
             <div className="container">
@@ -11,7 +22,7 @@ export const NavigationBar = React.createClass({
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="#">Dirt</a>
+                    <a className="navbar-brand" href="#">{this.getIntlMessage(this.props.brand)}</a>
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
                     {this.props.children}

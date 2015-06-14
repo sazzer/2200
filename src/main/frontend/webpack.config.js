@@ -27,6 +27,7 @@ module.exports = {
         extensions: [ "", ".js", ".jsx", ".json" ],
         alias: {
             'dirt-locales': '${project.build.outputDirectory}/resources/messages/locales.json',
+            'reduce-component': '${project.basedir}/src/main/frontend/external/reduce.js',
             'react': '${project.build.directory}/frontend/node_modules/react/react.js',
             'react-intl': '${project.build.directory}/frontend/node_modules/react-intl/index.js'
         }

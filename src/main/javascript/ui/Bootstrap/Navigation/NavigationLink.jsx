@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactIntl from 'react-intl';
 
 export const NavigationLink = React.createClass({
     propTypes: {
