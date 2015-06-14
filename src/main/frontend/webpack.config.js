@@ -25,7 +25,11 @@ module.exports = {
             "${project.build.directory}/frontend/bower_components",
         ],
         extensions: [ "", ".js", ".jsx", ".json" ],
-        alias: {}
+        alias: {
+            'dirt-locales': '${project.build.outputDirectory}/resources/messages/locales.json',
+            'react': '${project.build.directory}/frontend/node_modules/react/react.js',
+            'react-intl': '${project.build.directory}/frontend/node_modules/react-intl/index.js'
+        }
     },
     stats: {
         colors: true,

@@ -3,9 +3,17 @@ module.exports = function(grunt) {
     require('jit-grunt')(grunt, {
         bower: 'grunt-bower-task'
     });
+    require('./grunt-messages-task')(grunt);
+
     var webpack = require('webpack');
     var webpackConfig = require('./webpack.config.js');
     grunt.initConfig({
+        messages: {
+            options: {
+                inputs: '${project.basedir}/src/main/languages',
+                output: '${project.build.outputDirectory}/resources/messages'
+            }
+        },
         bower: {
             build: {
                 options: {
@@ -41,5 +49,5 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.registerTask('default', [ 'bower', 'sass', 'webpack' ]);
+    grunt.registerTask('default', [ 'bower', 'messages', 'sass', 'webpack' ]);
 };
