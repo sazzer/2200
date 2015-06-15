@@ -1,7 +1,8 @@
 module.exports = function(grunt) {
     require('time-grunt')(grunt);
     require('jit-grunt')(grunt, {
-        bower: 'grunt-bower-task'
+        bower: 'grunt-bower-task',
+        eslint: 'eslint-grunt'
     });
     require('./grunt-messages-task')(grunt);
 
@@ -36,6 +37,15 @@ module.exports = function(grunt) {
                 files: {
                     '${project.build.outputDirectory}/resources/css/main.bundle.css': '${project.basedir}/src/main/scss/main.scss'
                 }
+            }
+        },
+        eslint: {
+            all: [
+                '${project.basedir}/src/main/javascript/**/*.js',
+                '${project.basedir}/src/main/javascript/**/*.jsx'
+            ],
+            options: {
+                config: "${project.basedir}/target/frontend/eslintrc.json"
             }
         },
         webpack: {
