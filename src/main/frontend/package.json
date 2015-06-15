@@ -20,7 +20,8 @@
     "q": "^1.4.1",
     "time-grunt": "~1.2.1",
     "traverse": "^0.6.6",
-    "webpack": "~1.9.10"
+    "webpack": "~1.9.10",
+    "grunt-contrib-copy": "~0.8.0"
   },
   "dependencies": {
     "react": "^0.13.3",

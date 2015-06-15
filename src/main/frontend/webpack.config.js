@@ -3,6 +3,7 @@ var webpack = require("webpack");
 module.exports = {
     cache: true,
     entry: "${project.basedir}/src/main/javascript/main.js",
+    devtool: "source-map",
     output: {
         path: "${project.build.outputDirectory}/resources/javascript",
         filename: "[name].bundle.js"
