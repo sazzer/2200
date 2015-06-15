@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactIntl from 'react-intl';
+import React from "react";
+import ReactIntl from "react-intl";
 
 /**
  * Bootstrap Navigation Bar
@@ -14,6 +14,7 @@ export const NavigationBar = React.createClass({
 
     /**
      * Render the Navigation Bar
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
         let leftBars = this.props.children
@@ -26,7 +27,7 @@ export const NavigationBar = React.createClass({
             <div className="container">
                 <div className="navbar-header">
                     <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span className="sr-only">{this.getIntlMessage('Bootstrap.NavigationBar.toggle')}</span>
+                        <span className="sr-only">{this.getIntlMessage("Bootstrap.NavigationBar.toggle")}</span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>

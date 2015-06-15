@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactIntl from 'react-intl';
+import React from "react";
+import ReactIntl from "react-intl";
 
 /**
  * Bootstrap Navigation Link in a Navigation Area or Dropdown
@@ -14,6 +14,7 @@ export const NavigationLink = React.createClass({
 
     /**
      * Render the navigation link
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
         return <li><a href="#">{this.getIntlMessage(this.props.label)}</a></li>;

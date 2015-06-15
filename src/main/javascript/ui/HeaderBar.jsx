@@ -1,5 +1,5 @@
-import React from 'react';
-import {NavigationBar, NavigationArea, NavigationLink, NavigationDropdown} from 'ui/Bootstrap/Navigation';
+import React from "react";
+import {NavigationBar, NavigationArea, NavigationLink, NavigationDropdown} from "ui/Bootstrap/Navigation";
 
 /**
  * The header bar that is displayed at the top of the screen
@@ -7,6 +7,7 @@ import {NavigationBar, NavigationArea, NavigationLink, NavigationDropdown} from 
 export const HeaderBar = React.createClass({
     /**
      * Actually render the header bar
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
         return <NavigationBar brand="page.title">

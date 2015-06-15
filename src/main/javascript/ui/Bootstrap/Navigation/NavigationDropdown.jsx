@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactIntl from 'react-intl';
+import React from "react";
+import ReactIntl from "react-intl";
 
 /**
  * Bootstrap Dropdown in a Navigation Area
@@ -14,10 +14,9 @@ export const NavigationDropdown = React.createClass({
 
     /**
      * Render the dropdown
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
-        const labelText = this.props.label;
-
         return <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                 {this.getIntlMessage(this.props.label)} <span className="caret"></span>

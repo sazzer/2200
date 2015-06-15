@@ -59,5 +59,5 @@ module.exports = function(grunt) {
             }
         }
     });
-    grunt.registerTask('default', [ 'bower', 'messages', 'sass', 'webpack' ]);
+    grunt.registerTask('default', [ 'eslint', 'bower', 'messages', 'sass', 'webpack' ]);
 };

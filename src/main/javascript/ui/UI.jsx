@@ -1,5 +1,5 @@
-import React from 'react';
-import {HeaderBar} from 'ui/HeaderBar';
+import React from "react";
+import {HeaderBar} from "ui/HeaderBar";
 
 /**
  * The main UI for the entire application
@@ -23,7 +23,7 @@ export const UI = React.createClass({
 
     /**
      * Get the context of all child elements
-     * @return the context. This is the i18n strings to use
+     * @return {object} the context. This is the i18n strings to use
      */
     getChildContext: function() {
         return {
@@ -33,6 +33,7 @@ export const UI = React.createClass({
 
     /**
      * Actually render the main user interface
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
         return <HeaderBar />;

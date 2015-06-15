@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Bootstrap Navigation Area within a Navigation Bar
@@ -11,6 +11,7 @@ export const NavigationArea = React.createClass({
 
     /**
      * Render the navigation area
+     * @return {ReactElement} The React representation of this element
      */
     render: function() {
         const alignment = this.props.right ? "navbar-right" : "";
