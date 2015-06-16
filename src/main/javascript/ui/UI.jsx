@@ -1,5 +1,6 @@
 import React from "react";
 import {HeaderBar} from "ui/HeaderBar";
+import {HomeScreen} from "ui/home/HomeScreen";
 
 /**
  * The main UI for the entire application
@@ -36,6 +37,9 @@ export const UI = React.createClass({
      * @return {ReactElement} The React representation of this element
      */
     render: function() {
-        return <HeaderBar />;
+        return <div>
+            <HeaderBar />
+            <HomeScreen />
+        </div>;
     }
 });
