@@ -59,11 +59,17 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-          bootstrapMap: {
-            src: "${project.basedir}/target/frontend/bower_components/bootstrap/dist/css/bootstrap.css.map",
-            dest: "${project.build.outputDirectory}/resources/external/bootstrap/bootstrap.css.map"
-          }
+            bootstrapMap: {
+                src: "${project.basedir}/target/frontend/bower_components/bootstrap/dist/css/bootstrap.css.map",
+                dest: "${project.build.outputDirectory}/resources/external/bootstrap/bootstrap.css.map"
+            },
+            bootstrapFonts: {
+                cwd: "${project.basedir}/target/frontend/bower_components/bootstrap/dist/fonts/",
+                src: ["**"],
+                dest: "${project.build.outputDirectory}/resources/external/fonts/",
+                expand: true
+            }
         }
     });
-    grunt.registerTask("default", [ "eslint", "bower", "messages", "sass", "webpack", "copy:bootstrapMap" ]);
+    grunt.registerTask("default", [ "eslint", "bower", "messages", "sass", "webpack", "copy" ]);
 };

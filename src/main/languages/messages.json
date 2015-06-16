@@ -14,7 +14,7 @@
         "LoginForm": {
             "username": {
                 "label": "Email Address",
-                "placeholder": "Enter Email Adderss"
+                "placeholder": "Enter Email Address"
             },
             "password": {
                 "label": "Password",
@@ -23,6 +23,9 @@
             "buttons": {
                 "login": "Log In",
                 "register": "Register"
+            },
+            "error": {
+                "missingFields": "Please enter a username and password"
             }
         }
     },
