@@ -10,6 +10,20 @@
                 "characters": "Characters",
                 "logout": "Log Out"
             }
+        },
+        "LoginForm": {
+            "username": {
+                "label": "Email Address",
+                "placeholder": "Enter Email Adderss"
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter Password"
+            },
+            "buttons": {
+                "login": "Log In",
+                "register": "Register"
+            }
         }
     },
     "Bootstrap": {
