@@ -1,5 +1,6 @@
 import React from "react";
 import ReactIntl from "react-intl";
+import {LoginActions} from "login/LoginActions";
 
 /**
  * The login form for when the page first loads
@@ -106,6 +107,7 @@ export const LoginForm = React.createClass({
         this.setState({submitted: true});
         if (username !== "" && password !== "") {
             console.log("Logging in with username: " + username + " and password: " + password);
+            LoginActions.login.triggerPromise(username, password);
         }
         return false;
     }

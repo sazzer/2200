@@ -5,6 +5,7 @@
     "stomp-websocket": "~2.3.4",
     "bootstrap": "~3.3.4",
     "superagent": "~1.2.0",
-    "component-emitter": "~1.1.2"
+    "component-emitter": "~1.1.2",
+    "reflux": "~0.2.8"
   }
 }
