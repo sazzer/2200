@@ -106,7 +106,6 @@ export const LoginForm = React.createClass({
         const password = this.state.password;
         this.setState({submitted: true});
         if (username !== "" && password !== "") {
-            console.log("Logging in with username: " + username + " and password: " + password);
             LoginActions.login.triggerPromise(username, password);
         }
         return false;

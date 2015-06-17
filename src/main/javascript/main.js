@@ -4,6 +4,8 @@ import React from "react";
 import {UI} from "ui/UI";
 import {getStrings} from "i18n/strings";
 
+import "login/LoginStore";
+
 getStrings().then(strings => {
     React.render(React.createElement(UI, {
         messages: strings
