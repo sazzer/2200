@@ -59,6 +59,10 @@ module.exports = function(grunt) {
             }
         },
         copy: {
+            bootstrap: {
+                src: "${project.basedir}/target/frontend/bower_components/bootstrap/dist/css/bootstrap.css",
+                dest: "${project.build.outputDirectory}/resources/external/bootstrap/bootstrap.css"
+            },
             bootstrapMap: {
                 src: "${project.basedir}/target/frontend/bower_components/bootstrap/dist/css/bootstrap.css.map",
                 dest: "${project.build.outputDirectory}/resources/external/bootstrap/bootstrap.css.map"
