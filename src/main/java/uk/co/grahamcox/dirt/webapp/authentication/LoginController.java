@@ -1,20 +1,25 @@
 package uk.co.grahamcox.dirt.webapp.authentication;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import uk.co.grahamcox.dirt.authentication.AuthenticationCredentials;
 import uk.co.grahamcox.dirt.authentication.AuthenticationException;
 import uk.co.grahamcox.dirt.authentication.AuthenticationSystem;
 import uk.co.grahamcox.dirt.authentication.AuthenticationToken;
+import uk.co.grahamcox.dirt.webapp.MissingParameterException;
 
 /**
  * Controller to handle a request to log in
@@ -22,6 +27,9 @@ import uk.co.grahamcox.dirt.authentication.AuthenticationToken;
 @Controller
 @RequestMapping(value = "/api/authentication/login")
 public class LoginController {
+    /** The logger to use */
+    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+
     /** Map of Authentication Error Codes to HTTP Statuses */
     private static final Map<AuthenticationException.ErrorCode, HttpStatus> ERROR_STATUSES = new HashMap<>();
 
@@ -61,15 +69,6 @@ public class LoginController {
     }
 
     /**
-     * Handle when any other Exception occurs
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public void handleUnexpectedError(final Exception e) {
-        // Return a Status Code of 500 Internal Server Error
-    }
-
-    /**
      * Actually make a request to log in to the system
      * @param username the username to log in as
      * @param password the password to log in with
@@ -78,9 +77,24 @@ public class LoginController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public AuthenticationToken login(final String username, final String password)
+    public AuthenticationToken login(@RequestParam final Optional<String> username,
+        @RequestParam final Optional<String> password)
         throws AuthenticationException {
 
-        return authenticationSystem.authenticate(new AuthenticationCredentials(username, password));
+        if (username.isPresent() && password.isPresent()) {
+            return authenticationSystem.authenticate(new AuthenticationCredentials(username.get(), password.get()));
+        } else {
+            LOG.warn("Received authentication attempt that is missing username and/or password: {},{}",
+                username,
+                password);
+            Set<String> parameters = new HashSet<>();
+            if (!username.isPresent()) {
+                parameters.add("username");
+            }
+            if (!password.isPresent()) {
+                parameters.add("password");
+            }
+            throw new MissingParameterException(parameters);
+        }
     }
 }
