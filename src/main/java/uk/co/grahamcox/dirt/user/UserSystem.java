@@ -12,7 +12,16 @@ public class UserSystem {
      * @return the user, if there is one
      */
     public Optional<User> getByEmailAddress(final String emailAddress) {
-        return Optional.empty();
+        Optional<User> result;
+        if ("graham@grahamcox.co.uk".equals(emailAddress)) {
+            result = Optional.of(new User(new UserId("abcdef"),
+                emailAddress,
+                "password"));
+        } else {
+            result = Optional.empty();
+        }
+
+        return result;
     }
 
     /**

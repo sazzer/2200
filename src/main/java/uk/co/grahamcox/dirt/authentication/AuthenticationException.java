@@ -26,6 +26,7 @@ public class AuthenticationException extends Exception {
      * @param errorCode the error code
      */
     public AuthenticationException(final ErrorCode errorCode) {
+        super(errorCode.name());
         this.errorCode = errorCode;
     }
 
@@ -45,7 +46,7 @@ public class AuthenticationException extends Exception {
      * @param cause an additional root cause
      */
     public AuthenticationException(final ErrorCode errorCode, final Throwable cause) {
-        super(cause);
+        super(errorCode.name(), cause);
         this.errorCode = errorCode;
     }
 
