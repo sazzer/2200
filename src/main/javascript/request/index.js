@@ -38,8 +38,10 @@ export function request(url, {
             };
 
             if (res.ok) {
+                console.log("HTTP Request OK");
                 resolve(response);
             } else {
+                console.log("HTTP Error");
                 reject(response);
             }
         });

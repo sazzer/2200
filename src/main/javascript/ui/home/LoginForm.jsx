@@ -108,10 +108,10 @@ export const LoginForm = React.createClass({
         if (username !== "" && password !== "") {
             LoginActions.login.triggerPromise(username, password)
                 .then((result) => {
-                    console.log("Success: " + result);
+                    console.log(result);
                 })
                 .catch((error) => {
-                    console.log("Error: " + error);
+                    console.log(error);
                 });
         }
         return false;
