@@ -17,7 +17,6 @@ import uk.co.grahamcox.dirt.authentication.AuthenticationCredentials;
 import uk.co.grahamcox.dirt.authentication.AuthenticationException;
 import uk.co.grahamcox.dirt.authentication.AuthenticationSystem;
 import uk.co.grahamcox.dirt.authentication.AuthenticationToken;
-import uk.co.grahamcox.dirt.webapp.ParameterChecker;
 
 /**
  * Controller to handle a request to log in
@@ -75,14 +74,10 @@ public class LoginController {
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public AuthenticationToken login(@RequestParam final Optional<String> username,
-        @RequestParam final Optional<String> password)
+    public AuthenticationToken login(@RequestParam(value = "username", required = true) final String username,
+        @RequestParam(value = "password", required = true) final String password)
         throws AuthenticationException {
 
-        ParameterChecker.check("username", username)
-            .and("password", password)
-            .andThrow();
-
-        return authenticationSystem.authenticate(new AuthenticationCredentials(username.get(), password.get()));
+        return authenticationSystem.authenticate(new AuthenticationCredentials(username, password));
     }
 }
