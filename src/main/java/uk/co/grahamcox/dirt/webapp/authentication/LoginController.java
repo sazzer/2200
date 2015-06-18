@@ -3,8 +3,6 @@ package uk.co.grahamcox.dirt.webapp.authentication;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,8 +22,6 @@ import uk.co.grahamcox.dirt.authentication.AuthenticationToken;
 @Controller
 @RequestMapping(value = "/api/authentication/login")
 public class LoginController {
-    /** The logger to use */
-    private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
 
     /** Map of Authentication Error Codes to HTTP Statuses */
     private static final Map<AuthenticationException.ErrorCode, HttpStatus> ERROR_STATUSES = new HashMap<>();
