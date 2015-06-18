@@ -1,10 +1,8 @@
 package uk.co.grahamcox.dirt.webapp.authentication;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,7 +17,7 @@ import uk.co.grahamcox.dirt.authentication.AuthenticationCredentials;
 import uk.co.grahamcox.dirt.authentication.AuthenticationException;
 import uk.co.grahamcox.dirt.authentication.AuthenticationSystem;
 import uk.co.grahamcox.dirt.authentication.AuthenticationToken;
-import uk.co.grahamcox.dirt.webapp.MissingParameterException;
+import uk.co.grahamcox.dirt.webapp.ParameterChecker;
 
 /**
  * Controller to handle a request to log in
@@ -81,20 +79,10 @@ public class LoginController {
         @RequestParam final Optional<String> password)
         throws AuthenticationException {
 
-        if (username.isPresent() && password.isPresent()) {
-            return authenticationSystem.authenticate(new AuthenticationCredentials(username.get(), password.get()));
-        } else {
-            LOG.warn("Received authentication attempt that is missing username and/or password: {},{}",
-                username,
-                password);
-            Set<String> parameters = new HashSet<>();
-            if (!username.isPresent()) {
-                parameters.add("username");
-            }
-            if (!password.isPresent()) {
-                parameters.add("password");
-            }
-            throw new MissingParameterException(parameters);
-        }
+        ParameterChecker.check("username", username)
+            .and("password", password)
+            .andThrow();
+
+        return authenticationSystem.authenticate(new AuthenticationCredentials(username.get(), password.get()));
     }
 }
