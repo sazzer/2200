@@ -23,12 +23,18 @@ export const LoginStore = Reflux.createStore({
             },
             dataType: "application/x-www-form-urlencoded"
         }).then((response) => {
-            this.trigger(username, response.data.token);
+            this.trigger({
+                username,
+                token: response.data.token
+            });
+
             LoginActions.login.completed({
                 result: "SUCCESS",
                 userToken: response.data.token
             });
         }, (error) => {
+            this.trigger({});
+
             LoginActions.login.failed({
                 result: error.data.error,
                 message: error.data.message
