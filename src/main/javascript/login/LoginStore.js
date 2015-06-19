@@ -25,7 +25,8 @@ export const LoginStore = Reflux.createStore({
         }).then((response) => {
             this.trigger({
                 username,
-                token: response.data.token
+                token: response.data.token,
+                result: "SUCCESS"
             });
 
             LoginActions.login.completed({
@@ -33,7 +34,11 @@ export const LoginStore = Reflux.createStore({
                 userToken: response.data.token
             });
         }, (error) => {
-            this.trigger({});
+            this.trigger({
+                username,
+                token: null,
+                result: error.data.error
+            });
 
             LoginActions.login.failed({
                 result: error.data.error,

@@ -18,12 +18,12 @@ export const AuthenticatedStore = Reflux.createStore({
      * @param {String} username The username that we logged in with
      * @param {String} token The authentication token that we were issued
      */
-    onLogin: function({username, token}) {
+    onLogin: function({username, token, result}) {
         console.log("User " + username + " logged in with token " + token);
         this.trigger({
             username,
             token,
-            authenticated: true
+            authenticated: result === "SUCCESS"
         });
     }
 });
