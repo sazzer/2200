@@ -70,18 +70,18 @@ export const LoginForm = React.createClass({
             errorMessages.push(<Alert>{this.getIntlMessage(errorMessageKey)}</Alert>);
         }
 
-        return <form action="#" onSubmit={this.onSubmitForm}>
+        return <form className="test-loginform" action="#" onSubmit={this.onSubmitForm}>
             <div className={usernameClasses.join(" ")}>
                 <label className="control-label" for="username">{this.getIntlMessage("page.LoginForm.username.label")}</label>
-                <input type="email" className="form-control" name="username" placeholder={this.getIntlMessage("page.LoginForm.username.placeholder")} aria-describedby="usernameStatus" value={this.state.username} onChange={this.onUsernameChange} />
+                <input type="email" className="test-username form-control" name="username" placeholder={this.getIntlMessage("page.LoginForm.username.placeholder")} aria-describedby="usernameStatus" value={this.state.username} onChange={this.onUsernameChange} />
                 {usernameFeedback}
             </div>
             <div className={passwordClasses.join(" ")}>
                 <label className="control-label" for="password">{this.getIntlMessage("page.LoginForm.password.label")}</label>
-                <input type="password" className="form-control" name="password" placeholder={this.getIntlMessage("page.LoginForm.password.placeholder")} aria-describedby="passwordStatus" value={this.state.password} onChange={this.onPasswordChange} />
+                <input type="password" className="test-password form-control" name="password" placeholder={this.getIntlMessage("page.LoginForm.password.placeholder")} aria-describedby="passwordStatus" value={this.state.password} onChange={this.onPasswordChange} />
                 {passwordFeedback}
             </div>
-            <button type="submit" className="btn btn-lg btn-primary btn-block">{this.getIntlMessage("page.LoginForm.buttons.login")}</button>
+            <button type="submit" className="test-loginbutton btn btn-lg btn-primary btn-block">{this.getIntlMessage("page.LoginForm.buttons.login")}</button>
             {errorMessages}
           </form>;
     },
