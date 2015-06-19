@@ -1,6 +1,7 @@
 import React from "react";
 import ReactIntl from "react-intl";
 import {LoginActions} from "login/LoginActions";
+import {Alert} from "ui/Bootstrap/Alert";
 
 /**
  * The login form for when the page first loads
@@ -16,7 +17,9 @@ export const LoginForm = React.createClass({
         return {
             username: "",
             password: "",
-            submitted: false
+            submitted: false,
+            register: false,
+            error: null
         };
     },
 
@@ -33,10 +36,11 @@ export const LoginForm = React.createClass({
         let passwordClasses = ["form-group"];
         let usernameFeedback = [];
         let passwordFeedback = [];
-
-        let missingField = false;
+        let errorMessages = [];
 
         if (submitted) {
+            let missingField = false;
+
             if (username === "") {
                 usernameClasses.push("has-error");
                 usernameClasses.push("has-feedback");
@@ -55,11 +59,15 @@ export const LoginForm = React.createClass({
                 ];
                 missingField = true;
             }
+
+            if (missingField) {
+                errorMessages.push(<Alert>{this.getIntlMessage("page.LoginForm.error.missingFields")}</Alert>);
+            }
         }
 
-        let missingFieldElement = "";
-        if (missingField) {
-            missingFieldElement = <div className="alert alert-danger" role="alert">{this.getIntlMessage("page.LoginForm.error.missingFields")}</div>;
+        if (this.state.error) {
+            const errorMessageKey = "page.LoginForm.error.loginErrors." + this.state.error.result;
+            errorMessages.push(<Alert>{this.getIntlMessage(errorMessageKey)}</Alert>);
         }
 
         return <form action="#" onSubmit={this.onSubmitForm}>
@@ -74,7 +82,7 @@ export const LoginForm = React.createClass({
                 {passwordFeedback}
             </div>
             <button type="submit" className="btn btn-lg btn-primary btn-block">{this.getIntlMessage("page.LoginForm.buttons.login")}</button>
-            {missingFieldElement}
+            {errorMessages}
           </form>;
     },
 
@@ -111,7 +119,9 @@ export const LoginForm = React.createClass({
                     console.log(result);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    this.setState({
+                        error
+                    });
                 });
         }
         return false;

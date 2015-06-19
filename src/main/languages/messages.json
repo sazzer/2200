@@ -25,7 +25,12 @@
                 "register": "Register"
             },
             "error": {
-                "missingFields": "Please enter a username and password"
+                "missingFields": "Please enter a username and password",
+                "loginErrors": {
+                    "INVALID_PASSWORD": "The password entered was invalid",
+                    "INTERNAL_ERROR": "An unexpected error occurred",
+                    "DISABLED_USER": "The user account has been disabled"
+                }
             }
         }
     },
