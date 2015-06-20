@@ -1,24 +1,23 @@
-package uk.co.grahamcox.dirt.webapp;
+package uk.co.grahamcox.dirt.webapp.cucumber.spring;
 
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
- * Created by graham on 10/06/15.
+ * Spring Configuration for managing the Web Driver
  */
-public class FirstSeleniumIT {
+@Configuration
+public class WebDriverContext {
     private static final Map<String, Supplier<WebDriver>> DRIVERS = new HashMap<>();
 
     static {
@@ -27,24 +26,19 @@ public class FirstSeleniumIT {
         DRIVERS.put("chrome", ChromeDriver::new);
     }
 
-    @Test
-    public void test() throws InterruptedException {
-        String dirtUrl = System.getProperty("test.url");
+    /**
+     * Get the WebDriver bean to use
+     * @return the WebDriver
+     */
+    @Bean(name = "webdriver", destroyMethod = "quit")
+    @Scope("cucumber-glue")
+    public WebDriver getWebDriver() {
         String driverName = System.getProperty("webdriver", "phantomjs").toLowerCase();
         WebDriver driver = Optional.ofNullable(DRIVERS.get(driverName))
             .map(Supplier::get)
             .orElseThrow(() -> new IllegalArgumentException("Unsupported WebDriver: " + driverName));
 
-        driver.get(dirtUrl);
-        TimeUnit.SECONDS.sleep(2);
 
-        WebElement username = driver.findElement(By.cssSelector(".test-loginform .test-username"));
-        WebElement password = driver.findElement(By.cssSelector(".test-loginform .test-password"));
-        Assertions.assertThat(username.isDisplayed())
-            .isTrue();
-        Assertions.assertThat(password.isDisplayed())
-            .isTrue();
-
-        driver.quit();
+        return driver;
     }
 }
