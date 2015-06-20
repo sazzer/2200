@@ -17,7 +17,7 @@ public class LoadPageSteps {
     /**
      * Visit the home page
      */
-    @Given("that I visit the home page")
+    @Given("^that I visit the home page$")
     public void loadHomePage() {
         String dirtUrl = System.getProperty("test.url");
         webDriver.get(dirtUrl);

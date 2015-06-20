@@ -1,4 +1,3 @@
-@wip
 Feature: Checking the page loads
 
   Scenario: Check the page loads
