@@ -3,6 +3,10 @@ package uk.co.grahamcox.dirt.webapp.pagemodels;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Page Model for the Login form
  */
@@ -42,6 +46,16 @@ public class LoginFormPageModel {
     public void login() {
         loginFormElement.findElement(By.className("test-loginbutton"))
             .click();
+    }
+
+    /**
+     * Get all of the login errors on the page
+     * @return the list of login errors
+     */
+    public List<String> getLoginErrors() {
+        return loginFormElement.findElements(By.className("alert")).stream()
+            .map(WebElement::getText)
+            .collect(Collectors.toList());
     }
 }
 

@@ -4,6 +4,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
+import uk.co.grahamcox.dirt.webapp.pagemodels.LoginFormPageModel;
 import uk.co.grahamcox.dirt.webapp.pagemodels.MainPageModel;
 
 /**
@@ -24,12 +25,23 @@ public class LoginSteps {
             loginForm.login();
         });
     }
+
     /**
      * Check that the user isn't logged in
      */
     @Then("^I am not logged in$")
     public void checkNotLoggedIn() {
-        Assertions.assertThat(mainPageModel.getLoginForm().isPresent())
-            .isTrue();
+        Assertions.assertThat(mainPageModel.getLoginForm())
+            .isPresent();
+    }
+
+    /**
+     * Check that the specified login error is present
+     * @param error the login error to look for
+     */
+    @Then("^there is a login error of \"(.*)\"$")
+    public void checkMatchingLoginError(String error) {
+        Assertions.assertThat(mainPageModel.getLoginForm().get().getLoginErrors())
+            .contains(error);
     }
 }
