@@ -9,6 +9,7 @@
     "reflux": "~0.2.8",
     "es5-shim": "~4.1.7",
     "intl": "~0.1.4",
-    "bootstrap-social": "~4.9.1"
+    "bootstrap-social": "~4.9.1",
+    "font-awesome": "~4.3.0"
   }
 }

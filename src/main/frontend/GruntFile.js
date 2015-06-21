@@ -72,6 +72,12 @@ module.exports = function(grunt) {
                 src: ["**"],
                 dest: "${project.build.outputDirectory}/resources/external/fonts/",
                 expand: true
+            },
+            fontAwesomeFonts: {
+                cwd: "${project.basedir}/target/frontend/bower_components/font-awesome/fonts/",
+                src: ["**"],
+                dest: "${project.build.outputDirectory}/resources/external/fonts/",
+                expand: true
             }
         }
     });
