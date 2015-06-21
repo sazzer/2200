@@ -10,6 +10,13 @@
                 "characters": "Characters",
                 "logout": "Log Out"
             }
+        },
+        "LoginForm": {
+            "social": {
+                "facebook": "Sign in with Facebook",
+                "google": "Sign in with Google",
+                "twitter": "Sign in with Twitter"
+            }
         }
     },
     "Bootstrap": {

@@ -1,6 +1,6 @@
 import React from "react";
 import {SplashScreen} from "ui/home/SplashScreen";
-import {LoginForm} from "ui/home/LoginForm";
+import {LoginForm} from "ui/home/login/LoginForm";
 
 /**
  * The landing screen for when the page first loads
