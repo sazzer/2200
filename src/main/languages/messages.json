@@ -10,28 +10,6 @@
                 "characters": "Characters",
                 "logout": "Log Out"
             }
-        },
-        "LoginForm": {
-            "username": {
-                "label": "Email Address",
-                "placeholder": "Enter Email Address"
-            },
-            "password": {
-                "label": "Password",
-                "placeholder": "Enter Password"
-            },
-            "buttons": {
-                "login": "Log In",
-                "register": "Register"
-            },
-            "error": {
-                "missingFields": "Please enter a username and password",
-                "loginErrors": {
-                    "INVALID_PASSWORD": "The password entered was invalid",
-                    "INTERNAL_ERROR": "An unexpected error occurred",
-                    "DISABLED_USER": "The user account has been disabled"
-                }
-            }
         }
     },
     "Bootstrap": {
