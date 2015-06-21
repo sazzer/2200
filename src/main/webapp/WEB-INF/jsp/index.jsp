@@ -9,6 +9,7 @@
         <meta name="author" content="" />
         <c:url var="resources" value="/resources" />
         <link href="${resources}/external/bootstrap/bootstrap.css" type="text/css" rel="stylesheet" />
+        <link href="${resources}/external/bootstrap-social/bootstrap-social.css" type="text/css" rel="stylesheet" />
         <link href="${resources}/css/main.bundle.css" type="text/css" rel="stylesheet" />
 
         <script src="${resources}/external/es5-shim/es5-shim.js" type="text/javascript"></script>
