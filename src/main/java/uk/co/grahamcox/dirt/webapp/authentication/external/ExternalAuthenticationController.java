@@ -18,8 +18,13 @@ package uk.co.grahamcox.dirt.webapp.authentication.external;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,13 +35,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/api/authentication/external")
 public class ExternalAuthenticationController {
     /** The map of providers to use */
-    private final Map<String, ExternalAuthenticationProvider> providers;
+    private final Map<String, Optional<ExternalAuthenticationProvider>> providers;
 
     /**
      * Construct the controller
      * @param providers the map of providers to use
      */
-    public ExternalAuthenticationController(final Map<String, ExternalAuthenticationProvider> providers) {
+    public ExternalAuthenticationController(final Map<String, Optional<ExternalAuthenticationProvider>> providers) {
         this.providers = providers;
     }
 
@@ -48,8 +53,27 @@ public class ExternalAuthenticationController {
     @ResponseBody
     public List<String> getAuthenticationProviders() {
         return providers.entrySet().stream()
+            .filter(entry -> entry.getValue().isPresent())
             .map(Map.Entry::getKey)
             .sorted()
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Request that we authenticate with the specified authentication provider
+     * @param providerName the provider to use
+     * @return the response entity
+     */
+    @RequestMapping("/request/{provider}")
+    @ResponseBody
+    public ResponseEntity<ExternalAuthenticationRequest> requestExternalAuthentication(
+        @PathVariable("provider") final String providerName) {
+
+        return Optional.ofNullable(providers.get(providerName))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(ExternalAuthenticationProvider::requestAuthentication)
+            .map(authenticationRequest -> new ResponseEntity<>(authenticationRequest, HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
