@@ -10,7 +10,9 @@
     <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationController">
         <constructor-arg name="providers">
             <map>
-                
+                <entry key="google">
+                    <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.google.GoogleExternalAuthenticationProvider" />
+                </entry>
             </map>
         </constructor-arg>
     </bean>
