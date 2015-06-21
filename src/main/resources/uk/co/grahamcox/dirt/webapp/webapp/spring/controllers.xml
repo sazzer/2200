@@ -6,4 +6,6 @@
         <constructor-arg name="stringsBase" value="forward:/resources/messages" />
         <constructor-arg name="localesFile" value="classpath:/resources/messages/locales.json" />
     </bean>
+
+    <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationController" />
 </beans>

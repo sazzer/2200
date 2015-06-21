@@ -1,5 +1,5 @@
 import Reflux from "reflux";
-
+import {request} from "request";
 /**
  * Reflux Store for managing the list of available external providers
  */
@@ -16,10 +16,9 @@ export const ExternalProvidersStore = Reflux.createStore({
      * Request the list of supported providers
      */
     init: function() {
-        setTimeout(() => {
-            this.trigger([
-                "twitter", "facebook"
-                ]);
-        }, 3000);
+        request("/api/authentication/external")
+            .then(response => {
+                this.trigger(response.data);
+            });
     }
 });
