@@ -24,16 +24,6 @@ import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticatio
  */
 public class GoogleExternalAuthenticationProvider implements ExternalAuthenticationProvider {
     /**
-     * Check whether this provider is enabled or not
-     *
-     * @return true if the provider is enabled. False if not
-     */
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    /**
      * Request that authentication be started with the given provider
      *
      * @return the request to pass on to the browser for authentication

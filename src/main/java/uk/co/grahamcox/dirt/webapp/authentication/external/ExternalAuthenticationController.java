@@ -48,7 +48,6 @@ public class ExternalAuthenticationController {
     @ResponseBody
     public List<String> getAuthenticationProviders() {
         return providers.entrySet().stream()
-            .filter(entry -> entry.getValue().isEnabled())
             .map(Map.Entry::getKey)
             .sorted()
             .collect(Collectors.toList());
