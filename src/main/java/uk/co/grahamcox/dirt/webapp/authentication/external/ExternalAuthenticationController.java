@@ -16,8 +16,10 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,6 +30,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/api/authentication/external")
 public class ExternalAuthenticationController {
+    /** The map of providers to use */
+    private final Map<String, ExternalAuthenticationProvider> providers;
+
+    /**
+     * Construct the controller
+     * @param providers the map of providers to use
+     */
+    public ExternalAuthenticationController(final Map<String, ExternalAuthenticationProvider> providers) {
+        this.providers = providers;
+    }
+
     /**
      * Get the list of supported providers
      * @return the list of supported providers
@@ -35,6 +48,8 @@ public class ExternalAuthenticationController {
     @RequestMapping
     @ResponseBody
     public List<String> getAuthenticationProviders() {
-        return Arrays.asList("facebook", "google", "twitter");
+        List<String> providerNames = new ArrayList<>(providers.keySet());
+        Collections.sort(providerNames);
+        return providerNames;
     }
 }
