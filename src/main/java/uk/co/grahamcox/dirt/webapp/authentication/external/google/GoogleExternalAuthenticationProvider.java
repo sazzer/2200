@@ -16,7 +16,10 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external.google;
 
+import java.util.Map;
 import org.springframework.web.util.UriComponentsBuilder;
+import uk.co.grahamcox.dirt.webapp.authentication.external.AuthenticationResponse;
+import uk.co.grahamcox.dirt.webapp.authentication.external.AuthenticationStatus;
 import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationProvider;
 import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationRequest;
 
@@ -81,5 +84,16 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
             .toUri();
 
         return new ExternalAuthenticationRequest(state, resultUri);
+    }
+
+    /**
+     * Complete authentication, using the given parameters for the authentication provider
+     *
+     * @param params the parameters to complete authentication with
+     * @return the result of completing authentication
+     */
+    @Override
+    public AuthenticationResponse completeAuthentication(final Map<String, String> params) {
+        return new AuthenticationResponse("Google", AuthenticationStatus.SUCCESS);
     }
 }

@@ -104,11 +104,18 @@ public class ExternalAuthenticationController {
      * Finish external authentication, returning either a successful login, a new user login or a failure
      * @param providerName the name of the authentication provider
      * @param params the parameters from the authentication provider
+     * @return the response from authenticating the user
      */
     @RequestMapping("/complete/{provider}")
     @ResponseBody
-    public void finishExternalAuthentication(@PathVariable("provider") final String providerName,
+    public AuthenticationResponse finishExternalAuthentication(@PathVariable("provider") final String providerName,
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
+
+        return Optional.ofNullable(providers.get(providerName))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .map(provider -> provider.completeAuthentication(params))
+            .orElse(new AuthenticationResponse("", AuthenticationStatus.ERROR));
     }
 }

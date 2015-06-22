@@ -16,6 +16,8 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external;
 
+import java.util.Map;
+
 /**
  * Interface describing a provider that can be used for External Authentication
  */
@@ -25,4 +27,11 @@ public interface ExternalAuthenticationProvider {
      * @return the request to pass on to the browser for authentication
      */
     ExternalAuthenticationRequest requestAuthentication();
+
+    /**
+     * Complete authentication, using the given parameters for the authentication provider
+     * @param params the parameters to complete authentication with
+     * @return the result of completing authentication
+     */
+    AuthenticationResponse completeAuthentication(final Map<String, String> params);
 }
