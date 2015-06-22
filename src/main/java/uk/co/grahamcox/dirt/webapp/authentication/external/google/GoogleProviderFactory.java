@@ -26,6 +26,9 @@ public class GoogleProviderFactory extends AbstractFactoryBean<Optional<External
     /** The Token Endpoint to use */
     private final URI tokenEndpoint;
 
+    /** The Profile Endpoint to use */
+    private final URI profileEndpoint;
+
     /**
      * Construct the provider
      * @param clientId the Client ID
@@ -33,13 +36,16 @@ public class GoogleProviderFactory extends AbstractFactoryBean<Optional<External
      * @param redirectUri the Redirect URI to use
      * @param authenticationEndpoint the Authentication Endpoint
      * @param tokenEndpoint the Token Endpoint
+     * @param profileEndpoint the Profile Endpoint
      * @throws URISyntaxException if the Redirect URI is invalid
      */
     public GoogleProviderFactory(final String clientId,
-         final String clientSecret,
-         final String redirectUri,
-         final URI authenticationEndpoint,
-         final URI tokenEndpoint) throws URISyntaxException {
+        final String clientSecret,
+        final String redirectUri,
+        final URI authenticationEndpoint,
+        final URI tokenEndpoint,
+        final URI profileEndpoint) throws URISyntaxException {
+        this.profileEndpoint = profileEndpoint;
 
         this.clientId = Optional.ofNullable(clientId)
             .filter(v -> !v.isEmpty());
@@ -79,8 +85,8 @@ public class GoogleProviderFactory extends AbstractFactoryBean<Optional<External
                 clientSecret.get(),
                 redirectUri.get(),
                 authenticationEndpoint,
-                tokenEndpoint
-            ));
+                tokenEndpoint,
+                profileEndpoint));
         } else {
             result = Optional.empty();
         }

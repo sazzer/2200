@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -86,6 +89,9 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
     /** The Token Endpoint to use */
     private final URI tokenEndpoint;
 
+    /** The Profile Endpoint to use */
+    private final URI profileEndpoint;
+
     /** The rest template to use */
     private RestTemplate restTemplate = new RestTemplate();
     /**
@@ -95,18 +101,21 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
      * @param redirectUri the Redirect URI to use
      * @param authenticationEndpoint the Authentication Endpoint
      * @param tokenEndpoint the Token Endpoint
+     * @param profileEndpoint the Profile Endpoint
      */
     public GoogleExternalAuthenticationProvider(final String clientId,
         final String clientSecret,
         final URI redirectUri,
         final URI authenticationEndpoint,
-        final URI tokenEndpoint) {
+        final URI tokenEndpoint,
+        final URI profileEndpoint) {
 
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.redirectUri = redirectUri;
         this.authenticationEndpoint = authenticationEndpoint;
         this.tokenEndpoint = tokenEndpoint;
+        this.profileEndpoint = profileEndpoint;
     }
 
     /**
@@ -138,7 +147,7 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
      */
     @Override
     public AuthenticationResponse completeAuthentication(final Map<String, String> params) {
-        LOG.debug("Starting Google Authentication for Client ID {} and State {}", clientId, params.get(STATE_PARAM));
+        LOG.debug("Completing Google Authentication for Client ID {} and State {}", clientId, params.get(STATE_PARAM));
 
         MultiValueMap<String, String> tokenParams = new LinkedMultiValueMap<>();
         tokenParams.add(CLIENT_ID_PARAM, clientId);
@@ -150,6 +159,16 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
 
         ResponseEntity<Map> token = restTemplate.postForEntity(tokenEndpoint, tokenParams, Map.class);
         LOG.debug("Access Token: {}", token);
+        String accessToken = (String) token.getBody().get("access_token");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Authorization", "Bearer " + accessToken);
+
+        ResponseEntity<Map> profile = restTemplate.exchange(new RequestEntity<>(httpHeaders,
+                HttpMethod.GET,
+                profileEndpoint),
+            Map.class);
+        LOG.debug("Profile: {}", profile);
 
         return new AuthenticationResponse("Google", AuthenticationStatus.SUCCESS);
     }
