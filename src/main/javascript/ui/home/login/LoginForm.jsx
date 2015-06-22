@@ -2,6 +2,7 @@ import React from "react";
 import Reflux from "reflux";
 import {SocialLoginButton} from "ui/home/login/SocialLoginButton";
 import {ExternalProvidersStore} from "login/ExternalProvidersStore";
+import {LoginActions} from "login/LoginActions";
 
 /**
  * The login form for when the page first loads
@@ -25,6 +26,6 @@ export const LoginForm = React.createClass({
      * @param {String} type the type of button clicked
      */
     onClickSocialButton: function(type) {
-        console.log("Clicked social button: " + type);
+        LoginActions.externalLogin(type);
     }
 });
