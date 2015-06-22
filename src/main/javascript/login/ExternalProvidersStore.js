@@ -43,8 +43,19 @@ export const ExternalProvidersStore = Reflux.createStore({
             .catch(console.error);
     },
 
+    /**
+     * Continue to externally authenticate a user, handling the callback from the
+     * external authentication provider
+     * @param {String} provider The provider to use
+     * @param {Object} params The parameters the provider gave use
+     */
     onContinueExternalLogin: function(provider, params) {
         console.log("Continuing Authentication with provider: " + provider);
-        console.log(params);
+        request("/api/authentication/external/complete/" + provider, {
+            method: "POST",
+            data: params
+        })
+        .then(console.log)
+        .catch(console.error);
     }
 });

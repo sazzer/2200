@@ -21,10 +21,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +38,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/api/authentication/external")
 public class ExternalAuthenticationController {
+    /** the logger to use */
+    private static final Logger LOG = LoggerFactory.getLogger(ExternalAuthenticationController.class);
+
     /** The map of providers to use */
     private final Map<String, Optional<ExternalAuthenticationProvider>> providers;
 
@@ -70,12 +76,15 @@ public class ExternalAuthenticationController {
     public ResponseEntity<ExternalAuthenticationRequest> requestExternalAuthentication(
         @PathVariable("provider") final String providerName) {
 
-        return Optional.ofNullable(providers.get(providerName))
+        LOG.debug("Request that we start external authentication with provider {}", providerName);
+        ResponseEntity<ExternalAuthenticationRequest> result = Optional.ofNullable(providers.get(providerName))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(ExternalAuthenticationProvider::requestAuthentication)
             .map(authenticationRequest -> new ResponseEntity<>(authenticationRequest, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        LOG.debug("Request for external authentication via provider {}: {}", providerName, result);
+        return result;
     }
 
     /**
@@ -84,10 +93,22 @@ public class ExternalAuthenticationController {
      * @return the view for the callback page
      */
     @RequestMapping("/callback/{provider}")
-    public ModelAndView callbackExternalAuthentication(
-        @PathVariable("provider") final String providerName) {
+    public ModelAndView callbackExternalAuthentication(@PathVariable("provider") final String providerName) {
+        LOG.debug("Received callback from provider {}", providerName);
         ModelAndView result = new ModelAndView("/externalAuthenticationCallback");
         result.addObject("provider", providerName);
         return result;
+    }
+
+    /**
+     * Finish external authentication, returning either a successful login, a new user login or a failure
+     * @param providerName the name of the authentication provider
+     * @param params the parameters from the authentication provider
+     */
+    @RequestMapping("/complete/{provider}")
+    @ResponseBody
+    public void finishExternalAuthentication(@PathVariable("provider") final String providerName,
+        @RequestBody final Map<String, String> params) {
+        LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
     }
 }
