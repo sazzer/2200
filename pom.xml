@@ -321,6 +321,7 @@
                         <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                         <minimumTokens>100</minimumTokens>
                         <targetJdk>${version.jdk}</targetJdk>
+                        <printFailingErrors>true</printFailingErrors>
                     </configuration>
                 </plugin>
                 <plugin>
