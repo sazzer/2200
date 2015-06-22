@@ -26,6 +26,6 @@ export const LoginForm = React.createClass({
      * @param {String} type the type of button clicked
      */
     onClickSocialButton: function(type) {
-        LoginActions.externalLogin(type);
+        LoginActions.startExternalLogin(type);
     }
 });
