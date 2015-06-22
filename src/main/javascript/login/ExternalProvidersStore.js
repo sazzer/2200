@@ -2,6 +2,11 @@ import Reflux from "reflux";
 import {request} from "request";
 import {LoginActions} from "login/LoginActions";
 
+window.continueAuthentication = (p1, p2) => {
+    console.log("Continuing Authentication with provider: " + p1);
+    console.log(p2);
+};
+
 /**
  * Reflux Store for managing the list of available external providers
  */
@@ -34,7 +39,6 @@ export const ExternalProvidersStore = Reflux.createStore({
         console.log("Starting external login with provider: " + provider);
         request("/api/authentication/external/request/" + provider)
             .then((req) => {
-                console.log(req);
                 window.open(req.data.redirectUri,
                     "externalAuthentication",
                     "menubar=no,location=no,toolbar=no,dependent=yes");

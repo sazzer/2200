@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller to support using External Authentication Providers
@@ -75,5 +76,18 @@ public class ExternalAuthenticationController {
             .map(ExternalAuthenticationProvider::requestAuthentication)
             .map(authenticationRequest -> new ResponseEntity<>(authenticationRequest, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * Handle the callback from finishing external authentication
+     * @param providerName the provider to use
+     * @return the view for the callback page
+     */
+    @RequestMapping("/callback/{provider}")
+    public ModelAndView callbackExternalAuthentication(
+        @PathVariable("provider") final String providerName) {
+        ModelAndView result = new ModelAndView("/externalAuthenticationCallback");
+        result.addObject("provider", providerName);
+        return result;
     }
 }
