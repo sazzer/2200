@@ -1,5 +1,6 @@
 package uk.co.grahamcox.dirt.webapp.authentication.external.google;
 
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -7,9 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
-import java.util.Map;
 
 /**
  * Mechanism to load the Google+ Profile for a user that's just logged in
@@ -40,10 +38,10 @@ public class ProfileLoader {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "Bearer " + accessToken);
 
-        ResponseEntity<Map> profile = restTemplate.exchange(new RequestEntity<>(httpHeaders,
+        ResponseEntity<ProfileResponse> profile = restTemplate.exchange(new RequestEntity<>(httpHeaders,
                 HttpMethod.GET,
                 profileEndpoint),
-            Map.class);
+            ProfileResponse.class);
         LOG.debug("Profile: {}", profile);
     }
 }
