@@ -80,13 +80,19 @@ public class GoogleProviderFactory extends AbstractFactoryBean<Optional<External
     protected Optional<ExternalAuthenticationProvider> createInstance() throws Exception {
         Optional<ExternalAuthenticationProvider> result;
         if (clientId.isPresent() && clientSecret.isPresent() && redirectUri.isPresent()) {
-            result = Optional.of(new GoogleExternalAuthenticationProvider(
-                clientId.get(),
+            AuthentictionUriBuilder authentictionUriBuilder = new AuthentictionUriBuilder(clientId.get(),
+                redirectUri.get(),
+                authenticationEndpoint);
+            AccessTokenLoader accessTokenLoader = new AccessTokenLoader(clientId.get(),
                 clientSecret.get(),
                 redirectUri.get(),
-                authenticationEndpoint,
-                tokenEndpoint,
-                profileEndpoint));
+                tokenEndpoint);
+            ProfileLoader profileLoader = new ProfileLoader(profileEndpoint);
+
+            result = Optional.of(new GoogleExternalAuthenticationProvider(
+                authentictionUriBuilder,
+                accessTokenLoader,
+                profileLoader));
         } else {
             result = Optional.empty();
         }
