@@ -1,14 +1,11 @@
 package uk.co.grahamcox.dirt.webapp.authentication.external.google;
 
+import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URI;
-import java.util.Map;
 
 /**
  * Mechanism to load an Access Token for a user during authentication
@@ -84,9 +81,11 @@ public class AccessTokenLoader {
         tokenParams.add(GRANT_TYPE_PARAM, GRANT_TYPE_AUTHORIZATION_CODE);
         LOG.debug("Access Token Request: {}", tokenParams);
 
-        ResponseEntity<Map> token = restTemplate.postForEntity(tokenEndpoint, tokenParams, Map.class);
+        AccessTokenResponse token = restTemplate.postForObject(tokenEndpoint,
+            tokenParams,
+            AccessTokenResponse.class);
         LOG.debug("Access Token: {}", token);
-        String accessToken = (String) token.getBody().get("access_token");
+        String accessToken = token.getAccessToken();
 
         return accessToken;
     }
