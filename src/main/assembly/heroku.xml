@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<assembly>
+    <id>heroku</id>
+    <formats>
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <includes>
+                <include>org.eclipse.jetty:jetty-runner:*:*</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <fileMode>0644</fileMode>
+            <scope>provided</scope>
+        </dependencySet>
+        <dependencySet>
+            <outputDirectory>/</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <fileMode>0644</fileMode>
+            <scope>none</scope>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+        </dependencySet>
+    </dependencySets>
+</assembly>
