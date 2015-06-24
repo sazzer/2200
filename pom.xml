@@ -754,7 +754,7 @@
                             </includes>
                             <processTypes>
                                 <web>
-                                    java $JAVA_OPTS -jar target/${project.artifactId}-${project.version}-heroku/jetty-runner.jar --port $PORT target/${project.artifactId}-${project.version}-heroku/dirt.war -Dauthentication.google.clientId=$GOOGLE_CLIENTID -Dauthentication.google.clientSecret=$GOOGLE_CLIENTSECRET -Dauthentication.google.redirectUri=$GOOGLE_REDIRECTURI
+                                    java $JAVA_OPTS -Dauthentication.google.clientId=$GOOGLE_CLIENTID -Dauthentication.google.clientSecret=$GOOGLE_CLIENTSECRET -Dauthentication.google.redirectUri=$GOOGLE_REDIRECTURI -jar target/${project.artifactId}-${project.version}-heroku/jetty-runner.jar --port $PORT target/${project.artifactId}-${project.version}-heroku/dirt.war
                                 </web>
                             </processTypes>
                         </configuration>
