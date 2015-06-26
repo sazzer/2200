@@ -30,18 +30,11 @@ export const SocialLoginButton = React.createClass({
             "fa-" + this.props.type
         ];
 
-        return <a className={outerClasses.join(" ")} onClick={this.onClick}>
+        const url = "/api/authentication/external/request/" + this.props.type;
+        
+        return <a className={outerClasses.join(" ")} href={url} target="_blank">
             <i className={innerClasses.join(" ")}></i>
             {this.getIntlMessage("page.LoginForm.social." + this.props.type)}
         </a>;
-    },
-
-    /**
-     * Handle the button being clicked
-     */
-    onClick: function() {
-        if (this.props.onClick) {
-            this.props.onClick(this.props.type);
-        }
     }
 });

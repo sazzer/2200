@@ -35,21 +35,6 @@ export const ExternalProvidersStore = Reflux.createStore({
     },
 
     /**
-     * Perform an External Login using the named provider
-     * @param {String} provider the provider to use
-     */
-    onStartExternalLogin: function(provider) {
-        console.log("Starting external login with provider: ", provider);
-        request("/api/authentication/external/request/" + provider)
-            .then((req) => {
-                window.open(req.data.redirectUri,
-                    "externalAuthentication",
-                    "menubar=no,location=no,toolbar=no,dependent=yes");
-            })
-            .catch(console.error);
-    },
-
-    /**
      * Continue to externally authenticate a user, handling the callback from the
      * external authentication provider
      * @param {String} provider The provider to use

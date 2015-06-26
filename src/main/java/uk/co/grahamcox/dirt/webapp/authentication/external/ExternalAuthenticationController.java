@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -73,16 +74,21 @@ public class ExternalAuthenticationController {
      */
     @RequestMapping("/request/{provider}")
     @ResponseBody
-    public ResponseEntity<ExternalAuthenticationRequest> requestExternalAuthentication(
+    public ResponseEntity<Object> requestExternalAuthentication(
         @PathVariable("provider") final String providerName) {
 
         LOG.debug("Request that we start external authentication with provider {}", providerName);
-        ResponseEntity<ExternalAuthenticationRequest> result = Optional.ofNullable(providers.get(providerName))
+        ResponseEntity<Object> result = Optional.ofNullable(providers.get(providerName))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(ExternalAuthenticationProvider::requestAuthentication)
-            .map(authenticationRequest -> new ResponseEntity<>(authenticationRequest, HttpStatus.OK))
+            .map(authenticationRequest -> {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setLocation(authenticationRequest.getRedirectUri());
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);
+            })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
         LOG.debug("Request for external authentication via provider {}: {}", providerName, result);
         return result;
     }
