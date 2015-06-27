@@ -1,6 +1,9 @@
 import Reflux from "reflux";
+import debug from "visionmedia-debug";
 import {request} from "request";
 import {LoginActions} from "login/LoginActions";
+
+const log = debug("login:ExternalProvidersStore");
 
 window.continueAuthentication = LoginActions.continueExternalLogin;
 
@@ -18,7 +21,7 @@ export const ExternalProvidersStore = Reflux.createStore({
 
         request("/api/authentication/external")
             .then(response => {
-                console.log("Received list of external providers: ", response);
+                log("Received list of external providers: ", response);
                 this.providers = response.data;
                 this.trigger(this.providers);
             }).catch(error => {
@@ -41,12 +44,12 @@ export const ExternalProvidersStore = Reflux.createStore({
      * @param {Object} params The parameters the provider gave use
      */
     onContinueExternalLogin: function(provider, params) {
-        console.log("Continuing Authentication with provider: ", provider);
+        log("Continuing Authentication with provider: ", provider);
         request("/api/authentication/external/complete/" + provider, {
             method: "POST",
             data: params
         })
-        .then(console.log)
-        .catch(console.error);
+        .then(log)
+        .catch(log);
     }
 });

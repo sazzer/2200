@@ -1,4 +1,7 @@
 import superagent from "superagent";
+import debug from "visionmedia-debug";
+
+const log = debug("request");
 
 /**
  * Perform an Ajax request
@@ -38,10 +41,10 @@ export function request(url, {
             };
 
             if (res.ok) {
-                console.log("HTTP Request OK: ", res);
+                log("HTTP Request OK: ", res);
                 resolve(response);
             } else {
-                console.log("HTTP Error: ", res);
+                log("HTTP Error: ", res);
                 reject(response);
             }
         });
