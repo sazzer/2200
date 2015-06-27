@@ -11,6 +11,10 @@
 
        <mvc:annotation-driven />
 
+       <mvc:interceptors>
+           <bean class="uk.co.grahamcox.dirt.webapp.RequestIdInterceptor" />
+       </mvc:interceptors>
+
        <context:property-placeholder />
 
        <websocket:message-broker application-destination-prefix="/app">
