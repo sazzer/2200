@@ -16,11 +16,6 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
-import uk.co.grahamcox.dirt.authentication.external.AuthenticationStatus;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Controller to support using External Authentication Providers
@@ -125,6 +124,6 @@ public class ExternalAuthenticationController {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(provider -> provider.completeAuthentication(params))
-            .orElse(new AuthenticationResponse("", AuthenticationStatus.ERROR));
+            .orElseThrow(UnsupportedOperationException::new);
     }
 }

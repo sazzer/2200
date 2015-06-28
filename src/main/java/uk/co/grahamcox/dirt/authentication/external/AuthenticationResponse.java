@@ -1,48 +1,90 @@
 package uk.co.grahamcox.dirt.authentication.external;
 
+import java.util.Optional;
+
 /**
  * Response from authenticating with an external provider
  */
 public class AuthenticationResponse {
-    /** The authentication token to use for future requests */
-    private final String authenticationToken;
+    /** The ID of the user as assigned by the external provider */
+    private final String providerId;
 
-    /** The status of the authentication */
-    private final AuthenticationStatus status;
+    /** The name of the user as known by the provider */
+    private Optional<String> userName;
+
+    /** The email address of the user as known by the provider */
+    private Optional<String> userEmail;
 
     /**
-     * Construct the authentication response
-     * @param authenticationToken the authentication token to use
-     * @param status the authentication status
+     * Construct the response with all of the details
+     * @param providerId the ID of the user
+     * @param userName the name of the user
+     * @param userEmail the email address of the user
      */
-    public AuthenticationResponse(final String authenticationToken, final AuthenticationStatus status) {
-        this.authenticationToken = authenticationToken;
-        this.status = status;
+    public AuthenticationResponse(final String providerId,
+                                  final Optional<String> userName,
+                                  final Optional<String> userEmail) {
+
+        this.providerId = providerId;
+        this.userName = userName;
+        this.userEmail = userEmail;
     }
 
     /**
-     * Get the authentication token
-     * @return the authentication token
+     * Construct the response with only an ID
+     * @param providerId the ID of the user
      */
-    public String getAuthenticationToken() {
-        return authenticationToken;
+    public AuthenticationResponse(final String providerId) {
+        this(providerId, Optional.empty(), Optional.empty());
     }
 
     /**
-     * Get the authentication status
-     * @return the authentication status
+     * Get the ID of the user
+     * @return the ID of the user
      */
-    public AuthenticationStatus getStatus() {
-        return status;
+    public String getProviderId() {
+        return providerId;
+    }
+
+    /**
+     * Get the name of the user
+     * @return the name of the user
+     */
+    public Optional<String> getUserName() {
+        return userName;
+    }
+
+    /**
+     * Set the name of the user
+     * @param userName the name of the user
+     */
+    public void setUserName(final Optional<String> userName) {
+        this.userName = userName;
+    }
+
+    /**
+     * Get the email address of the user
+     * @return the email address
+     */
+    public Optional<String> getUserEmail() {
+        return userEmail;
+    }
+
+    /**
+     * Set the email address of the user
+     * @param userEmail the email address
+     */
+    public void setUserEmail(final Optional<String> userEmail) {
+        this.userEmail = userEmail;
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AuthenticationResponse{");
-        sb.append("authenticationToken='").append(authenticationToken).append('\'');
-        sb.append(", status=").append(status);
-        sb.append('}');
-        return sb.toString();
+        return "AuthenticationResponse{" +
+            "providerId='" + providerId + '\'' +
+            ", userName=" + userName +
+            ", userEmail=" + userEmail +
+            '}';
     }
 }

@@ -17,12 +17,12 @@
 package uk.co.grahamcox.dirt.authentication.external.google;
 
 import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
-import uk.co.grahamcox.dirt.authentication.external.AuthenticationStatus;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationRequest;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -76,8 +76,15 @@ public class GoogleExternalAuthenticationProvider implements ExternalAuthenticat
     @Override
     public AuthenticationResponse completeAuthentication(final Map<String, String> params) {
         String accessToken = accessTokenLoader.loadAccessToken(params.get("code"));
-        profileLoader.loadProfile(accessToken);
+        ProfileResponse profileResponse = profileLoader.loadProfile(accessToken);
+        Optional<String> name = Optional.ofNullable(profileResponse.getName());
+        Optional<String> email = profileResponse.getEmails().stream()
+            .filter(v -> "account".equals(v.getType()))
+            .map(ProfileEmail::getEmail)
+            .findFirst();
 
-        return new AuthenticationResponse("Google", AuthenticationStatus.SUCCESS);
+        return new AuthenticationResponse(profileResponse.getId(),
+            name,
+            email);
     }
 }
