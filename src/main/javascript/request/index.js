@@ -1,5 +1,6 @@
 import superagent from "superagent";
 import debug from "visionmedia-debug";
+import uuid from "node-uuid";
 
 const log = debug("request");
 
@@ -21,9 +22,14 @@ export function request(url, {
     } = {}) {
 
     return new Promise((resolve, reject) => {
+        const requestId = uuid.v4();
+        log("Requesting %s %s with Request ID %s",
+            method, url, requestId);
+
         const superagentRequest = superagent(method, url)
             .set("Accept", accept);
 
+        superagentRequest.set("X-Request-ID", requestId);
         if (data) {
           superagentRequest.set("Content-Type", dataType)
                 .send(data);
