@@ -1,7 +1,7 @@
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationProvider;
+import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
 
 import java.net.URI;
 import java.net.URISyntaxException;

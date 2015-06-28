@@ -1,4 +1,4 @@
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

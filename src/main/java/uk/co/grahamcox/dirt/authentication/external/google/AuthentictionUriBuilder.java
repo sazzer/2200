@@ -1,4 +1,4 @@
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

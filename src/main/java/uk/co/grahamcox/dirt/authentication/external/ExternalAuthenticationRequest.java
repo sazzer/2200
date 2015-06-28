@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.grahamcox.dirt.webapp.authentication.external;
+package uk.co.grahamcox.dirt.authentication.external;
 
 import java.net.URI;
 

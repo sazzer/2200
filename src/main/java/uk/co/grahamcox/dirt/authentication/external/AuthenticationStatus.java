@@ -1,4 +1,4 @@
-package uk.co.grahamcox.dirt.webapp.authentication.external;
+package uk.co.grahamcox.dirt.authentication.external;
 
 /**
  * Enumeration of the possible statuses of authentication

@@ -6,10 +6,11 @@
  * any part to any third party or used by any person for any purpose, without written
  * consent of OCLC, Inc.  Duplication of any portion of these materials shall include this notice.
  ******************************************************************************************************************/
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**

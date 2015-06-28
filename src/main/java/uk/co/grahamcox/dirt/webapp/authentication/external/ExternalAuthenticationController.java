@@ -32,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
+import uk.co.grahamcox.dirt.authentication.external.AuthenticationStatus;
+import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
 
 /**
  * Controller to support using External Authentication Providers

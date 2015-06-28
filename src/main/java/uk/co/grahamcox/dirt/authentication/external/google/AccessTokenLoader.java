@@ -1,11 +1,12 @@
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
-import java.net.URI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.net.URI;
 
 /**
  * Mechanism to load an Access Token for a user during authentication

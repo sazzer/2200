@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.grahamcox.dirt.webapp.authentication.external.google;
+package uk.co.grahamcox.dirt.authentication.external.google;
 
-import uk.co.grahamcox.dirt.webapp.authentication.external.AuthenticationResponse;
-import uk.co.grahamcox.dirt.webapp.authentication.external.AuthenticationStatus;
-import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationProvider;
-import uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationRequest;
+import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
+import uk.co.grahamcox.dirt.authentication.external.AuthenticationStatus;
+import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
+import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationRequest;
 
 import java.net.URI;
 import java.util.Map;

@@ -11,7 +11,7 @@
         <constructor-arg name="providers">
             <map>
                 <entry key="google">
-                    <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.google.GoogleProviderFactory">
+                    <bean class="uk.co.grahamcox.dirt.authentication.external.google.GoogleProviderFactory">
                         <constructor-arg name="authenticationEndpoint" value="https://accounts.google.com/o/oauth2/auth" />
                         <constructor-arg name="tokenEndpoint" value="https://www.googleapis.com/oauth2/v3/token" />
                         <constructor-arg name="profileEndpoint" value="https://www.googleapis.com/plus/v1/people/me" />
