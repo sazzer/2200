@@ -8,7 +8,7 @@
     </bean>
 
     <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationController">
-        <constructor-arg name="providers">
+        <constructor-arg index="0">
             <map>
                 <entry key="google">
                     <bean class="uk.co.grahamcox.dirt.authentication.external.google.GoogleProviderFactory">
@@ -23,5 +23,6 @@
                 </entry>
             </map>
         </constructor-arg>
+        <constructor-arg index="1" type="uk.co.grahamcox.dirt.users.UserLoader" ref="userService" />
     </bean>
 </beans>

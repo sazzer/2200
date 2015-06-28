@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
+import uk.co.grahamcox.dirt.users.ExternalUserId;
+import uk.co.grahamcox.dirt.users.User;
+import uk.co.grahamcox.dirt.users.UserLoader;
 
 import java.util.List;
 import java.util.Map;
@@ -47,12 +50,17 @@ public class ExternalAuthenticationController {
     /** The map of providers to use */
     private final Map<String, Optional<ExternalAuthenticationProvider>> providers;
 
+    /** The user loader to use */
+    private final UserLoader userLoader;
     /**
      * Construct the controller
      * @param providers the map of providers to use
+     * @param userLoader the user loader to use
      */
-    public ExternalAuthenticationController(final Map<String, Optional<ExternalAuthenticationProvider>> providers) {
+    public ExternalAuthenticationController(final Map<String, Optional<ExternalAuthenticationProvider>> providers,
+        final UserLoader userLoader) {
         this.providers = providers;
+        this.userLoader = userLoader;
     }
 
     /**
@@ -116,14 +124,19 @@ public class ExternalAuthenticationController {
      */
     @RequestMapping("/complete/{provider}")
     @ResponseBody
-    public AuthenticationResponse finishExternalAuthentication(@PathVariable("provider") final String providerName,
+    public Optional<User> finishExternalAuthentication(@PathVariable("provider") final String providerName,
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
 
-        return Optional.ofNullable(providers.get(providerName))
+        AuthenticationResponse authenticationResponse = Optional.ofNullable(providers.get(providerName))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(provider -> provider.completeAuthentication(params))
             .orElseThrow(UnsupportedOperationException::new);
+
+        ExternalUserId externalUserId = new ExternalUserId(providerName, authenticationResponse.getProviderId());
+        Optional<User> user = userLoader.loadUser(externalUserId);
+
+        return user;
     }
 }
