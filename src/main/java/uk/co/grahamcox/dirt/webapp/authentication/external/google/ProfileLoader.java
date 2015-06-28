@@ -33,8 +33,9 @@ public class ProfileLoader {
     /**
      * Load the User Profile for the given access token
      * @param accessToken the Google Access Token
+     * @return the user profile
      */
-    public void loadProfile(final String accessToken) {
+    public ProfileResponse loadProfile(final String accessToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Authorization", "Bearer " + accessToken);
 
@@ -43,5 +44,6 @@ public class ProfileLoader {
                 profileEndpoint),
             ProfileResponse.class);
         LOG.debug("Profile: {}", profile);
+        return profile.getBody();
     }
 }
