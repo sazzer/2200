@@ -113,6 +113,18 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${version.jackson}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${version.jackson}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
             <version>${version.slf4j}</version>
@@ -753,9 +765,7 @@
                                 <include>target/${project.artifactId}-${project.version}-heroku/**</include>
                             </includes>
                             <processTypes>
-                                <web>
-                                    java $JAVA_OPTS -Dauthentication.google.clientId=$GOOGLE_CLIENTID -Dauthentication.google.clientSecret=$GOOGLE_CLIENTSECRET -Dauthentication.google.redirectUri=$GOOGLE_REDIRECTURI -jar target/${project.artifactId}-${project.version}-heroku/jetty-runner.jar --port $PORT target/${project.artifactId}-${project.version}-heroku/dirt.war
-                                </web>
+                                <web>java $JAVA_OPTS -Dauthentication.google.clientId=$GOOGLE_CLIENTID -Dauthentication.google.clientSecret=$GOOGLE_CLIENTSECRET -Dauthentication.google.redirectUri=$GOOGLE_REDIRECTURI -jar target/${project.artifactId}-${project.version}-heroku/jetty-runner.jar --port $PORT target/${project.artifactId}-${project.version}-heroku/dirt.war</web>
                             </processTypes>
                         </configuration>
                     </plugin>
