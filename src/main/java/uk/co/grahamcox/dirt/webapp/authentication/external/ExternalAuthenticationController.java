@@ -16,6 +16,9 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -27,13 +30,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
+import uk.co.grahamcox.dirt.authentication.AccessToken;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationService;
-import uk.co.grahamcox.dirt.users.User;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 /**
  * Controller to support using External Authentication Providers
@@ -110,13 +108,12 @@ public class ExternalAuthenticationController {
      */
     @RequestMapping("/complete/{provider}")
     @ResponseBody
-    public Optional<User> finishExternalAuthentication(@PathVariable("provider") final String providerName,
+    public Optional<AccessToken> finishExternalAuthentication(@PathVariable("provider") final String providerName,
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
 
-        AuthenticationResponse authenticationResponse =
-            externalAuthenticationService.completeAuthentication(providerName, params);
+        AccessToken accessToken = externalAuthenticationService.completeAuthentication(providerName, params);
 
-        return Optional.empty();
+        return Optional.of(accessToken);
     }
 }

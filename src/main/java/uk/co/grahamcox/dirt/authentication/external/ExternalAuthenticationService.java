@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import uk.co.grahamcox.dirt.authentication.AccessToken;
 
 /**
  * Service for providing authentication using external services
@@ -63,13 +64,15 @@ public class ExternalAuthenticationService {
      * @param params the parameters to complete authentication with
      * @return the result of completing authentication
      */
-    public AuthenticationResponse completeAuthentication(final String providerName,
+    public AccessToken completeAuthentication(final String providerName,
         final Map<String, String> params) {
         LOG.trace("Completing external authentication using provider {} and params {}", providerName, params);
-        return Optional.ofNullable(providers.get(providerName))
+        AuthenticationResponse authenticationResponse = Optional.ofNullable(providers.get(providerName))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(provider -> provider.completeAuthentication(params))
             .orElseThrow(UnsupportedOperationException::new);
+
+        return new AccessToken(authenticationResponse.getProviderId());
     }
 }
