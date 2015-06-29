@@ -20,4 +20,6 @@
                      </map>
               </constructor-arg>
        </bean>
+
+       <bean id="accessTokenService" class="uk.co.grahamcox.dirt.authentication.AccessTokenService" />
 </beans>

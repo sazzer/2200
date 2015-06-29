@@ -1,13 +1,11 @@
 package uk.co.grahamcox.dirt.authentication.external;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import uk.co.grahamcox.dirt.authentication.AccessToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Service for providing authentication using external services
@@ -64,15 +62,13 @@ public class ExternalAuthenticationService {
      * @param params the parameters to complete authentication with
      * @return the result of completing authentication
      */
-    public AccessToken completeAuthentication(final String providerName,
+    public AuthenticationResponse completeAuthentication(final String providerName,
         final Map<String, String> params) {
         LOG.trace("Completing external authentication using provider {} and params {}", providerName, params);
-        AuthenticationResponse authenticationResponse = Optional.ofNullable(providers.get(providerName))
+        return Optional.ofNullable(providers.get(providerName))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(provider -> provider.completeAuthentication(params))
             .orElseThrow(UnsupportedOperationException::new);
-
-        return new AccessToken(authenticationResponse.getProviderId());
     }
 }

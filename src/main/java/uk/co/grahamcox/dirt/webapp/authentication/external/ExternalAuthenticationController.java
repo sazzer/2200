@@ -31,7 +31,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import uk.co.grahamcox.dirt.authentication.AccessToken;
+import uk.co.grahamcox.dirt.authentication.AccessTokenService;
+import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
 import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationService;
+import uk.co.grahamcox.dirt.users.ExternalUserId;
+import uk.co.grahamcox.dirt.users.User;
+import uk.co.grahamcox.dirt.users.UserService;
 
 /**
  * Controller to support using External Authentication Providers
@@ -45,12 +50,24 @@ public class ExternalAuthenticationController {
     /** The service for external authentication */
     private final ExternalAuthenticationService externalAuthenticationService;
 
+    /** The service for managing users */
+    private final UserService userService;
+
+    /** The service for working with access tokens */
+    private final AccessTokenService accessTokenService;
+
     /**
      * Construct the controller
      * @param externalAuthenticationService the external authentication service
+     * @param userService The User Service
+     * @param accessTokenService the Access Token Service
      */
-    public ExternalAuthenticationController(final ExternalAuthenticationService externalAuthenticationService) {
+    public ExternalAuthenticationController(final ExternalAuthenticationService externalAuthenticationService,
+        final UserService userService,
+        final AccessTokenService accessTokenService) {
         this.externalAuthenticationService = externalAuthenticationService;
+        this.userService = userService;
+        this.accessTokenService = accessTokenService;
     }
 
 
@@ -112,7 +129,11 @@ public class ExternalAuthenticationController {
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
 
-        AccessToken accessToken = externalAuthenticationService.completeAuthentication(providerName, params);
+        AuthenticationResponse authenticationResponse =
+            externalAuthenticationService.completeAuthentication(providerName, params);
+        Optional<User> user =
+            userService.loadUser(new ExternalUserId(providerName, authenticationResponse.getProviderId()));
+        AccessToken accessToken = accessTokenService.generate(user.get());
 
         return Optional.of(accessToken);
     }

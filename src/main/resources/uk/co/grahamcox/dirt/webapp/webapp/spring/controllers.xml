@@ -8,6 +8,8 @@
     </bean>
 
     <bean class="uk.co.grahamcox.dirt.webapp.authentication.external.ExternalAuthenticationController">
-        <constructor-arg index="0" ref="externalAuthenticationService" />
+        <constructor-arg name="externalAuthenticationService" ref="externalAuthenticationService" />
+        <constructor-arg name="userService" ref="userService" />
+        <constructor-arg name="accessTokenService" ref="accessTokenService" />
     </bean>
 </beans>

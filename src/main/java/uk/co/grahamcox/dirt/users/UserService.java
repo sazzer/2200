@@ -1,5 +1,6 @@
 package uk.co.grahamcox.dirt.users;
 
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,11 @@ public class UserService implements UserLoader {
     @Override
     public Optional<User> loadUser(final ExternalUserId userId) {
         LOG.debug("Loading the user details for {}", userId);
-        return Optional.empty();
+        User user = new User();
+        user.addExternalUserId(userId);
+        user.setUserId(new UserId(UUID.randomUUID().toString()));
+        user.setName("Graham Cox");
+        user.setEmail("graham@grahamcox.co.uk");
+        return Optional.of(user);
     }
 }
