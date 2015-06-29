@@ -28,15 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import uk.co.grahamcox.dirt.authentication.external.AuthenticationResponse;
-import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationProvider;
-import uk.co.grahamcox.dirt.users.ExternalUserId;
+import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationService;
 import uk.co.grahamcox.dirt.users.User;
-import uk.co.grahamcox.dirt.users.UserLoader;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Controller to support using External Authentication Providers
@@ -47,21 +44,17 @@ public class ExternalAuthenticationController {
     /** the logger to use */
     private static final Logger LOG = LoggerFactory.getLogger(ExternalAuthenticationController.class);
 
-    /** The map of providers to use */
-    private final Map<String, Optional<ExternalAuthenticationProvider>> providers;
+    /** The service for external authentication */
+    private final ExternalAuthenticationService externalAuthenticationService;
 
-    /** The user loader to use */
-    private final UserLoader userLoader;
     /**
      * Construct the controller
-     * @param providers the map of providers to use
-     * @param userLoader the user loader to use
+     * @param externalAuthenticationService the external authentication service
      */
-    public ExternalAuthenticationController(final Map<String, Optional<ExternalAuthenticationProvider>> providers,
-        final UserLoader userLoader) {
-        this.providers = providers;
-        this.userLoader = userLoader;
+    public ExternalAuthenticationController(final ExternalAuthenticationService externalAuthenticationService) {
+        this.externalAuthenticationService = externalAuthenticationService;
     }
+
 
     /**
      * Get the list of supported providers
@@ -70,11 +63,7 @@ public class ExternalAuthenticationController {
     @RequestMapping
     @ResponseBody
     public List<String> getAuthenticationProviders() {
-        return providers.entrySet().stream()
-            .filter(entry -> entry.getValue().isPresent())
-            .map(Map.Entry::getKey)
-            .sorted()
-            .collect(Collectors.toList());
+        return externalAuthenticationService.getProviders();
     }
 
     /**
@@ -88,10 +77,7 @@ public class ExternalAuthenticationController {
         @PathVariable("provider") final String providerName) {
 
         LOG.debug("Request that we start external authentication with provider {}", providerName);
-        ResponseEntity<Object> result = Optional.ofNullable(providers.get(providerName))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(ExternalAuthenticationProvider::requestAuthentication)
+        ResponseEntity<Object> result = externalAuthenticationService.requestAuthentication(providerName)
             .map(authenticationRequest -> {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setLocation(authenticationRequest.getRedirectUri());
@@ -128,15 +114,9 @@ public class ExternalAuthenticationController {
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
 
-        AuthenticationResponse authenticationResponse = Optional.ofNullable(providers.get(providerName))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .map(provider -> provider.completeAuthentication(params))
-            .orElseThrow(UnsupportedOperationException::new);
+        AuthenticationResponse authenticationResponse =
+            externalAuthenticationService.completeAuthentication(providerName, params);
 
-        ExternalUserId externalUserId = new ExternalUserId(providerName, authenticationResponse.getProviderId());
-        Optional<User> user = userLoader.loadUser(externalUserId);
-
-        return user;
+        return Optional.empty();
     }
 }

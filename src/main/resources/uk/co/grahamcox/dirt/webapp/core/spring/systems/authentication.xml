@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <bean id="externalAuthenticationService" class="uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationService">
+              <constructor-arg name="providers">
+                     <map>
+                            <entry key="google">
+                                   <bean class="uk.co.grahamcox.dirt.authentication.external.google.GoogleProviderFactory">
+                                          <constructor-arg name="authenticationEndpoint" value="https://accounts.google.com/o/oauth2/auth" />
+                                          <constructor-arg name="tokenEndpoint" value="https://www.googleapis.com/oauth2/v3/token" />
+                                          <constructor-arg name="profileEndpoint" value="https://www.googleapis.com/plus/v1/people/me" />
+
+                                          <constructor-arg name="clientId" value="${authentication.google.clientId:}" />
+                                          <constructor-arg name="clientSecret" value="${authentication.google.clientSecret:}" />
+                                          <constructor-arg name="redirectUri" value="${authentication.google.redirectUri:}" />
+                                   </bean>
+                            </entry>
+                     </map>
+              </constructor-arg>
+       </bean>
+</beans>
