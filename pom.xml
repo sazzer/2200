@@ -77,6 +77,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${version.slf4j}</version>
@@ -356,6 +362,9 @@
                         <minimumTokens>100</minimumTokens>
                         <targetJdk>${version.jdk}</targetJdk>
                         <printFailingErrors>true</printFailingErrors>
+                        <excludeRoots>
+                            <excludeRoot>${project.build.directory}/generated-sources</excludeRoot>
+                        </excludeRoots>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -413,6 +422,24 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.7.4.201502262128</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jsonschema2pojo</groupId>
+                    <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                    <version>0.4.13</version>
+                    <configuration>
+                        <annotationStyle>jackson2</annotationStyle>
+                        <constructorsRequiredPropertiesOnly>true</constructorsRequiredPropertiesOnly>
+                        <generateBuilders>false</generateBuilders>
+                        <includeConstructors>true</includeConstructors>
+                        <includeHashcodeAndEquals>true</includeHashcodeAndEquals>
+                        <includeToString>true</includeToString>
+                        <initializeCollections>true</initializeCollections>
+                        <useCommonsLang3>true</useCommonsLang3>
+                        <useDoubleNumbers>true</useDoubleNumbers>
+                        <usePrimitives>false</usePrimitives>
+                        <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -499,6 +526,21 @@
                                     </includes>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${basedir}/src/main/jsonschema</sourceDirectory>
+                            <targetPackage>uk.co.grahamcox.dirt.webapp.api</targetPackage>
                         </configuration>
                     </execution>
                 </executions>
