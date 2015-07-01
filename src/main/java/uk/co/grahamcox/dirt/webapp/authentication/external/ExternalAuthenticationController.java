@@ -16,9 +16,6 @@
  */
 package uk.co.grahamcox.dirt.webapp.authentication.external;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +34,11 @@ import uk.co.grahamcox.dirt.authentication.external.ExternalAuthenticationServic
 import uk.co.grahamcox.dirt.users.ExternalUserId;
 import uk.co.grahamcox.dirt.users.User;
 import uk.co.grahamcox.dirt.users.UserService;
+import uk.co.grahamcox.dirt.webapp.authentication.UserToken;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Controller to support using External Authentication Providers
@@ -121,11 +123,12 @@ public class ExternalAuthenticationController {
      * Finish external authentication, returning either a successful login, a new user login or a failure
      * @param providerName the name of the authentication provider
      * @param params the parameters from the authentication provider
-     * @return the response from authenticating the user
+     * @return the response from authenticating the user. This includes an access token for API access and some
+     *     user details for the user that was authenticated
      */
     @RequestMapping("/complete/{provider}")
     @ResponseBody
-    public Optional<AccessToken> finishExternalAuthentication(@PathVariable("provider") final String providerName,
+    public UserToken finishExternalAuthentication(@PathVariable("provider") final String providerName,
         @RequestBody final Map<String, String> params) {
         LOG.debug("Completing external authentication from provider {} with params {}", providerName, params);
 
@@ -133,8 +136,9 @@ public class ExternalAuthenticationController {
             externalAuthenticationService.completeAuthentication(providerName, params);
         Optional<User> user =
             userService.loadUser(new ExternalUserId(providerName, authenticationResponse.getProviderId()));
+
         AccessToken accessToken = accessTokenService.generate(user.get());
 
-        return Optional.of(accessToken);
+        return new UserToken(accessToken, user.get().getName());
     }
 }
