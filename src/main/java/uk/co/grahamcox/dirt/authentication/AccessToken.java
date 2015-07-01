@@ -1,5 +1,6 @@
 package uk.co.grahamcox.dirt.authentication;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -9,12 +10,17 @@ public class AccessToken {
     /** The actual value of the access token */
     private final String value;
 
+    /** The date/time that the access token expires at */
+    private final ZonedDateTime expires;
+
     /**
      * Construct the access token
      * @param value the value of the access token
+     * @param expires the expiry time of the access token
      */
-    public AccessToken(final String value) {
+    public AccessToken(final String value, final ZonedDateTime expires) {
         this.value = value;
+        this.expires = expires;
     }
 
     /**
@@ -23,6 +29,14 @@ public class AccessToken {
      */
     public String getValue() {
         return value;
+    }
+
+    /**
+     * Get the time the access token expires
+     * @return the expiry time
+     */
+    public ZonedDateTime getExpires() {
+        return expires;
     }
 
     /** {@inheritDoc} */
@@ -34,22 +48,23 @@ public class AccessToken {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AccessToken that = (AccessToken) o;
-        return Objects.equals(value, that.value);
+        final AccessToken that = (AccessToken) o;
+        return Objects.equals(value, that.value) &&
+            Objects.equals(expires, that.expires);
     }
 
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return Objects.hash(value);
+        return Objects.hash(value, expires);
     }
 
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AccessToken{");
-        sb.append("value='").append(value).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "AccessToken{" +
+            "value='" + value + '\'' +
+            ", expires=" + expires +
+            '}';
     }
 }

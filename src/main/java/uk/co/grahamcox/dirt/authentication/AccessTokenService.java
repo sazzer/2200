@@ -51,6 +51,6 @@ public class AccessTokenService {
             .signWith(SignatureAlgorithm.HS512, key)
             .compact();
 
-        return new AccessToken(jwtAccessToken);
+        return new AccessToken(jwtAccessToken, expires);
     }
 }
